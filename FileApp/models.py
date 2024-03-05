@@ -7,7 +7,6 @@ class FileModel(models.Model):
     fileName = models.CharField(max_length=200)
     folderParent = models.IntegerField(default=0)
     file = models.FileField(upload_to='example/', null=True, blank=True)
-    filePath = models.CharField()
     userId = models.CharField(max_length=100)
     createdAt = models.DateField(auto_now_add=True)
 
@@ -16,4 +15,13 @@ class FileModel(models.Model):
     
 
     def getPath(self):
+        return self.filePath
+    
+class FilePaths(models.Model):
+    
+    id = models.AutoField(primary_key=True, unique=True)
+    file = models.ForeignKey(FileModel, on_delete=models.CASCADE)
+    filePath = models.CharField(max_length=500)
+    
+    def __str__(self):
         return self.filePath

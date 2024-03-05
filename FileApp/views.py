@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
+import requests
 
 
 class FilePostView(APIView):
@@ -28,8 +29,23 @@ class FilePostView(APIView):
         serializers = FileSerializer(data = data)
         
         if serializers.is_valid():
+            """
+            response = requests.get('url',json = 'data')
+            
+            if response.status_code == 200:
+                filepath = response.data['paths']
+            """
             #serializers.save()
             print(serializers.data)
             return Response(serializers.data)
         else:
             return Response(serializers.errors)
+        
+class FilesView(APIView):
+    
+    def get(self,request):
+        
+        files = FileModel.objects.all()
+        serializers = FileSerializer(files, many=True)
+        return Response(serializers.data, status=status.HTTP_200_OK)
+

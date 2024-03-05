@@ -22,5 +22,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('server/',include('FolderApp.urls'))
+    path('server/',include('FolderApp.urls')),
+    path('files/',include('FileApp.urls'))
 ]

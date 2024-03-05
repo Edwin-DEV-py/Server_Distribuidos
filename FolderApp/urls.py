@@ -4,4 +4,5 @@ from .views import *
 urlpatterns  = [
     path('createFolder/', RegisterFolder.as_view(),name="folder"),
     path('getFolder/<int:parentFolder>/', GetFolderByParentId.as_view(),name="folderByParent"),
+    path('updateFolder/', UpdateFolder.as_view(), name="updateFolder")
 ]

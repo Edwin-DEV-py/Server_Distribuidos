@@ -27,3 +27,19 @@ class GetFolderByParentId(APIView):
         folder = FolderModel.objects.filter(parentFolder=parentFolder)
         serializer = FolderSerializer(folder, many=True)
         return Response(serializer.data)
+
+class UpdateFolder(APIView):
+    
+    def post(self,request):
+        
+        folder = request.folder
+        
+        folder.folderName = request.data.get('folderName')
+        folder.parentFolder = request.data.get('parentFolder')
+        folder.storage = request.data.get('storage')
+        
+        folder.save()
+        serializers = FolderSerializer(data = folder)
+        print(serializers.data)
+        return Response(serializers.data)
+        

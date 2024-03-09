@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+//definir mensajes
+message UserCredentials {
+    string username = 1;
+    string password = 2;
+}
+
+message AuthenticationResponse {
+    bool success = 1;
+    string token = 2;
+    string error_message = 3;
+}
+
+//definir el servicio
+service AuthenticationService {
+    rpc AuthenticateUser (UserCredentials) returns (AuthenticationResponse);
+}

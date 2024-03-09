@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'FolderApp',
-    'FileApp'
+    'FileApp',
+    'userGRPC'
 ]
 
 MIDDLEWARE = [

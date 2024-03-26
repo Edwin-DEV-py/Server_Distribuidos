@@ -3,8 +3,8 @@ from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from grpc import insecure_channel
-from .. import server_pb2 as grpc_pb2
-from .. import server_pb2_grpc as grpc_pb2_grpc
+import server_pb2 as grpc_pb2
+import server_pb2_grpc as grpc_pb2_grpc
 import requests
 import grpc
 
@@ -22,7 +22,7 @@ class AuthenticationView(APIView):
             
             #conexion gRPC con el server de usuarios
             
-            channel = grpc.insecure_channel('127.0.0.1:8000')
+            channel = grpc.insecure_channel('127.0.0.1:50051')
             stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
 
             #crear el mensjae

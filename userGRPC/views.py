@@ -7,6 +7,8 @@ import server_pb2 as grpc_pb2
 import server_pb2_grpc as grpc_pb2_grpc
 import requests
 import grpc
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 #autenticacion por grpc
@@ -72,4 +74,14 @@ class RegisterViewGRPC(APIView):
         return Response(serializers.errors)
             
 
-            
+class VerifyUserView(APIView):
+    
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        
+        print(user)
+        
+        return Response({"message:": user.username})

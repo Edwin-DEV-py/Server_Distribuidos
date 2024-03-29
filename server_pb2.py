@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0cserver.proto\"5\n\x0fUserCredentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"O\n\x16\x41uthenticationResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05token\x18\x02 \x01(\t\x12\x15\n\rerror_message\x18\x03 \x01(\t2V\n\x15\x41uthenticationService\x12=\n\x10\x41uthenticateUser\x12\x10.UserCredentials\x1a\x17.AuthenticationResponseb\x06proto3'
+  serialized_pb=b'\n\x0cserver.proto\"5\n\x0fUserCredentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"O\n\x16\x41uthenticationResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05token\x18\x02 \x01(\t\x12\x15\n\rerror_message\x18\x03 \x01(\t\"i\n\x17UserCredentialsRegister\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\x05\x12\x10\n\x08password\x18\x05 \x01(\t\"L\n\x10RegisterResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x10\n\x08mensagge\x18\x02 \x01(\t\x12\x15\n\rerror_message\x18\x03 \x01(\t2V\n\x15\x41uthenticationService\x12=\n\x10\x41uthenticateUser\x12\x10.UserCredentials\x1a\x17.AuthenticationResponse2N\n\x0fRegisterService\x12;\n\x0cRegisterUser\x12\x18.UserCredentialsRegister\x1a\x11.RegisterResponseb\x06proto3'
 )
 
 
@@ -109,8 +109,116 @@ _AUTHENTICATIONRESPONSE = _descriptor.Descriptor(
   serialized_end=150,
 )
 
+
+_USERCREDENTIALSREGISTER = _descriptor.Descriptor(
+  name='UserCredentialsRegister',
+  full_name='UserCredentialsRegister',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='username', full_name='UserCredentialsRegister.username', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='UserCredentialsRegister.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='email', full_name='UserCredentialsRegister.email', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='phone', full_name='UserCredentialsRegister.phone', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='password', full_name='UserCredentialsRegister.password', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=152,
+  serialized_end=257,
+)
+
+
+_REGISTERRESPONSE = _descriptor.Descriptor(
+  name='RegisterResponse',
+  full_name='RegisterResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='success', full_name='RegisterResponse.success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='mensagge', full_name='RegisterResponse.mensagge', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='error_message', full_name='RegisterResponse.error_message', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=259,
+  serialized_end=335,
+)
+
 DESCRIPTOR.message_types_by_name['UserCredentials'] = _USERCREDENTIALS
 DESCRIPTOR.message_types_by_name['AuthenticationResponse'] = _AUTHENTICATIONRESPONSE
+DESCRIPTOR.message_types_by_name['UserCredentialsRegister'] = _USERCREDENTIALSREGISTER
+DESCRIPTOR.message_types_by_name['RegisterResponse'] = _REGISTERRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 UserCredentials = _reflection.GeneratedProtocolMessageType('UserCredentials', (_message.Message,), {
@@ -127,6 +235,20 @@ AuthenticationResponse = _reflection.GeneratedProtocolMessageType('Authenticatio
   })
 _sym_db.RegisterMessage(AuthenticationResponse)
 
+UserCredentialsRegister = _reflection.GeneratedProtocolMessageType('UserCredentialsRegister', (_message.Message,), {
+  'DESCRIPTOR' : _USERCREDENTIALSREGISTER,
+  '__module__' : 'server_pb2'
+  # @@protoc_insertion_point(class_scope:UserCredentialsRegister)
+  })
+_sym_db.RegisterMessage(UserCredentialsRegister)
+
+RegisterResponse = _reflection.GeneratedProtocolMessageType('RegisterResponse', (_message.Message,), {
+  'DESCRIPTOR' : _REGISTERRESPONSE,
+  '__module__' : 'server_pb2'
+  # @@protoc_insertion_point(class_scope:RegisterResponse)
+  })
+_sym_db.RegisterMessage(RegisterResponse)
+
 
 
 _AUTHENTICATIONSERVICE = _descriptor.ServiceDescriptor(
@@ -136,8 +258,8 @@ _AUTHENTICATIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=152,
-  serialized_end=238,
+  serialized_start=337,
+  serialized_end=423,
   methods=[
   _descriptor.MethodDescriptor(
     name='AuthenticateUser',
@@ -153,5 +275,31 @@ _AUTHENTICATIONSERVICE = _descriptor.ServiceDescriptor(
 _sym_db.RegisterServiceDescriptor(_AUTHENTICATIONSERVICE)
 
 DESCRIPTOR.services_by_name['AuthenticationService'] = _AUTHENTICATIONSERVICE
+
+
+_REGISTERSERVICE = _descriptor.ServiceDescriptor(
+  name='RegisterService',
+  full_name='RegisterService',
+  file=DESCRIPTOR,
+  index=1,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=425,
+  serialized_end=503,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='RegisterUser',
+    full_name='RegisterService.RegisterUser',
+    index=0,
+    containing_service=None,
+    input_type=_USERCREDENTIALSREGISTER,
+    output_type=_REGISTERRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_REGISTERSERVICE)
+
+DESCRIPTOR.services_by_name['RegisterService'] = _REGISTERSERVICE
 
 # @@protoc_insertion_point(module_scope)

@@ -25,4 +25,4 @@ urlpatterns = [
     path('server/',include('FolderApp.urls')),
     path('files/',include('FileApp.urls')),
     path('users/',include('userGRPC.urls')),
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

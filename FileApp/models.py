@@ -6,7 +6,6 @@ class FileModel(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     fileName = models.CharField(max_length=200)
     folderParent = models.IntegerField(default=0)
-    file = models.FileField(upload_to='example/', null=True, blank=True)
     userId = models.CharField(max_length=100)
     createdAt = models.DateField(auto_now_add=True)
 

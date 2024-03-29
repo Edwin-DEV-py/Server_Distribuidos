@@ -28,6 +28,8 @@ class FilePostView(APIView):
         data['user'] = user
         serializers = FileSerializer(data = data)
         
+        print(data)
+        
         if serializers.is_valid():
             """
             response = requests.get('url',json = 'data')

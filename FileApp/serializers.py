@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import *
 
 class FileSerializer(serializers.ModelSerializer):
-    file = serializers.FileField(required=True)
+    file = serializers.FileField(required=False)
     
     class Meta:
         model = FileModel

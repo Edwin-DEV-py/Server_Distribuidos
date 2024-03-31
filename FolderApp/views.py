@@ -1,13 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
 from FileApp.models import FileModel, FilePaths
 from FileApp.serializers import FileSerializer
 from .serializers import *
 from .models import *
 from django.conf import settings
 import jwt
+from django.db.models import Sum
 
 class RegisterFolder(APIView):
 
@@ -66,6 +66,9 @@ class GetFolderByParentId(APIView):
             files = FileModel.objects.filter(folderParent=parentFolder, userId=user_id)
             serializer_files = FileSerializer(files, many=True)
             
+            #calcular el peso total de la carpeta actual
+            total_storage = FolderModel.objects.filter(parentFolder=parentFolder, userId=user_id).aggregate(Sum('storage'))['storage__sum'] or 0
+            
             #combinar los datos
             """
                 DECIRLES A LSO CLIENTES QUE EL STORAGE DL FOLDER LLEGA EN BYTES
@@ -88,7 +91,7 @@ class GetFolderByParentId(APIView):
                 
                 combined_data.append(file_data)
             
-            return Response(combined_data)
+            return Response({'data': combined_data, 'TotalStorage': total_storage})
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
 

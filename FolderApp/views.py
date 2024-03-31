@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from FileApp.models import FileModel
+from FileApp.models import FileModel, FilePaths
 from FileApp.serializers import FileSerializer
 from .serializers import *
 from .models import *
@@ -45,6 +45,7 @@ class RegisterFolder(APIView):
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
 
+#obtener las carpetas y archivos en una sola llamada
 class GetFolderByParentId(APIView):
 
     def get(self,request,parentFolder=0):
@@ -66,6 +67,11 @@ class GetFolderByParentId(APIView):
             serializer_files = FileSerializer(files, many=True)
             
             #combinar los datos
+            """
+                DECIRLES A LSO CLIENTES QUE EL STORAGE DL FOLDER LLEGA EN BYTES
+                POR LO TANTO ELLOS DEBEN CONVERTIR ESE VALOR EN MB O GB PARA
+                MOSTRARLE AL USUARIO.
+            """
             combined_data = []
             
             for folder_data in serializer_folder.data:
@@ -74,12 +80,19 @@ class GetFolderByParentId(APIView):
             
             for file_data in serializer_files.data:
                 file_data['type'] = 'file'
+                
+                #traer las rutas para pasarselas al cliente
+                file_id = file_data['id']
+                file_paths = FilePaths.objects.filter(file=file_id)
+                file_data['paths'] = [file_path.filePath for file_path in file_paths]
+                
                 combined_data.append(file_data)
             
             return Response(combined_data)
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
 
+#editar una carpeta
 class UpdateFolder(APIView):
     
     def get(self,request, folderId):
@@ -89,13 +102,19 @@ class UpdateFolder(APIView):
     
     def post(self,request, folderId):
         
-        folder = FolderModel.objects.get(id=folderId)
+        #verificar el token
+        token = request.headers.get('Authorization', '').split(' ')[1]
         
-        folder.folderName = request.data.get('folderName')
-        folder.parentFolder = request.data.get('parentFolder')
-        folder.storage = request.data.get('storage')
-        
-        folder.save()
-        serializers = FolderSerializer(folder)
-        return Response(serializers.data)
+        try:
+            folder = FolderModel.objects.get(id=folderId)
+            
+            folder.folderName = request.data.get('folderName')
+            folder.parentFolder = request.data.get('parentFolder')
+            folder.storage = request.data.get('storage')
+            
+            folder.save()
+            serializers = FolderSerializer(folder)
+            return Response(serializers.data)
+        except jwt.exceptions.InvalidTokenError:
+            return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
         

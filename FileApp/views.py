@@ -16,6 +16,9 @@ import requests
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.conf import settings
 import jwt
+from django.db import transaction
+from FolderApp.models import FolderModel
+from django.db.models import F
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -43,9 +46,11 @@ class FilePostView(APIView):
             files = request.FILES.getlist('files')
             file_send_list = []
             
+            print(files)
             for file in files:
                 file_name = file.name
-                
+                file_size = file.size
+                print(file_size)
                 data = {
                     'userId': user_id,
                     'fileName': file_name,
@@ -54,18 +59,28 @@ class FilePostView(APIView):
                 serializers = FileSerializer(data=data)
                 
                 if serializers.is_valid():
-                    instance = serializers.save()
-                    file_send_list.append(data)
                     
-                    #datos que seran enviados al servidor
-                    data_send_server = {
-                        'userId': user_id,
-                        'file': file,
-                        'file_id': instance.id
-                    }
-                    
-                    Send_data_to_FileServer(data_send_server)
-                    
+                    #transaccion atomica para evitar perdida de datos
+                    with transaction.atomic():
+                        instance = serializers.save()
+                        file_send_list.append(data)
+                        
+                        #datos que seran enviados al servidor
+                        data_send_server = {
+                            'userId': user_id,
+                            'file': file,
+                            'file_id': instance.id
+                        }
+                        
+                        #actualizar el espacio del folder
+                        if folder_id != 0:
+                            update_storage_folder = FolderModel.objects.get(id=folder_id)
+                            update_storage_folder.storage = F('storage') + file_size
+                            update_storage_folder.save()
+                        
+                        response = Send_data_to_FileServer(data_send_server)
+                        if not response:
+                            raise Exception("Ocurrio un error con el servidor de archivos")
                 else:
                     return Response(serializers.errors)
                 
@@ -105,7 +120,7 @@ def Send_data_to_FileServer(data):
             file_path = FilePaths(file=file_instance, filePath=url)
             file_path.save()
             
-        return example_response
+        return True
     except Exception as e:
         print("Error al enviar los datos:", e)
         return False
@@ -118,3 +133,6 @@ class FilesView(APIView):
         files = FileModel.objects.all()
         serializers = FileSerializer(files, many=True)
         return Response(serializers.data, status=status.HTTP_200_OK)
+    
+#editar archivo
+

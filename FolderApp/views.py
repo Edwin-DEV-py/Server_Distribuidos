@@ -95,7 +95,7 @@ class GetFolderByParentId(APIView):
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
 
-#editar una carpeta
+#editar y eliminar una carpeta
 class UpdateFolder(APIView):
     
     def get(self,request, folderId):
@@ -109,7 +109,10 @@ class UpdateFolder(APIView):
         token = request.headers.get('Authorization', '').split(' ')[1]
         
         try:
-            folder = FolderModel.objects.get(id=folderId)
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+            
+            folder = FolderModel.objects.get(id=folderId, userId=user_id)
             
             folder.folderName = request.data.get('folderName')
             folder.parentFolder = request.data.get('parentFolder')
@@ -120,4 +123,33 @@ class UpdateFolder(APIView):
             return Response(serializers.data)
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    def delete(self, request, folderId):
         
+        #verificar el token
+        token = request.headers.get('Authorization', '').split(' ')[1]
+        
+        try:
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+            
+            files_in_folder = FileModel.objects.filter(folderParent=folderId,userId=user_id).delete()
+            folders_in_folder = FolderModel.objects.filter(parentFolder=folderId, userId=user_id)
+            for folder_in_folder in folders_in_folder:
+                self.delete_subfolder(folder_in_folder.id)
+            
+            folder = FolderModel.objects.get(id=folderId, userId=user_id)
+            folder.delete()
+            
+        except jwt.exceptions.InvalidTokenError:
+            return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    #funsion recursiva para borrar archivos de subfolders
+    def delete_subfolder(self, folderId):
+        #Recursivamente eliminar subcarpetas y archivos
+        files_in_folder = FileModel.objects.filter(folderParent=folderId).delete()
+        folders_in_folder = FolderModel.objects.filter(parentFolder=folderId)
+        for folder_in_folder in folders_in_folder:
+            self.delete_subfolder(folder_in_folder.id)
+        folder = FolderModel.objects.get(id=folderId)
+        folder.delete()

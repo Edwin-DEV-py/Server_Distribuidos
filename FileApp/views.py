@@ -135,4 +135,57 @@ class FilesView(APIView):
         return Response(serializers.data, status=status.HTTP_200_OK)
     
 #editar archivo
+class UpdateFile(APIView):
+    
+    def post(self, request):
+        
+        #verificar el token
+        token = request.headers.get('Authorization', '').split(' ')[1]
+        
+        try:
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+            file_id = request.data.get('fileId')
+            file = FileModel.objects.get(userId=user_id, id=file_id)
+            
+            file.folderParent = request.data.get('folderParent')
+            file.fileName = request.data.get('filename')
+            
+            file.save()
+            serializers = FileSerializer(file)
+            return Response(serializers.data)
+            
+        except jwt.exceptions.InvalidTokenError:
+            return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+    def delete(self, request):
+        #verificar el token
+        token = request.headers.get('Authorization', '').split(' ')[1]
 
+        try:
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+
+            #obtener los IDs
+            file_ids = request.data.get('fileIds')
+
+            #verificar si se proporciono una lista
+            if isinstance(file_ids, list):
+                for file_id in file_ids:
+                    try:
+                        file = FileModel.objects.get(userId=user_id, id=file_id)
+                        file.delete()
+                    except FileModel.DoesNotExist:
+                        pass
+            else:
+                file_id = file_ids
+                try:
+                    file = FileModel.objects.get(userId=user_id, id=file_id)
+                    file.delete()
+                except FileModel.DoesNotExist:
+                    pass
+
+            return Response({'message': 'Archivos eliminados correctamente'})
+
+        except jwt.exceptions.InvalidTokenError:
+            return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)

@@ -9,7 +9,8 @@ import requests
 import grpc
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from django.conf import settings
+import jwt
 
 #autenticacion por grpc
 class AuthenticationView(APIView):

@@ -113,9 +113,11 @@ class UpdateFolder(APIView):
             user_id = user['user_id']
             
             folder = FolderModel.objects.get(id=folderId, userId=user_id)
-            
+            print(folder)
             folder.folderName = request.data.get('folderName')
-            folder.parentFolder = request.data.get('parentFolder')
+            parent_folder_id = request.data.get('parentFolder')
+            if parent_folder_id is not None:
+                folder.parentFolder = parent_folder_id
             folder.storage = request.data.get('storage')
             
             folder.save()
@@ -140,6 +142,8 @@ class UpdateFolder(APIView):
             
             folder = FolderModel.objects.get(id=folderId, userId=user_id)
             folder.delete()
+            
+            return Response({'message:': 'carpeta eliminada'})
             
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)

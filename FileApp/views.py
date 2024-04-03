@@ -148,7 +148,9 @@ class UpdateFile(APIView):
             file_id = request.data.get('fileId')
             file = FileModel.objects.get(userId=user_id, id=file_id)
             
-            file.folderParent = request.data.get('folderParent')
+            parent_folder_id = request.data.get('folderParent')
+            if parent_folder_id is not None:
+                file.folderParent = parent_folder_id
             file.fileName = request.data.get('filename')
             
             file.save()

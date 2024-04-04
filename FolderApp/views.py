@@ -7,6 +7,7 @@ from .serializers import *
 from .models import *
 from django.conf import settings
 import jwt
+import os
 from django.db.models import Sum
 
 class RegisterFolder(APIView):
@@ -83,6 +84,11 @@ class GetFolderByParentId(APIView):
             
             for file_data in serializer_files.data:
                 file_data['type'] = 'file'
+                
+                #obtener la extensiond el archivo
+                file_name = file_data['fileName']
+                file_extension = os.path.splitext(file_name)[1].lstrip('.')
+                file_data['extension'] = file_extension
                 
                 #traer las rutas para pasarselas al cliente
                 file_id = file_data['id']

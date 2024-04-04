@@ -163,3 +163,99 @@ class UpdateFolder(APIView):
             self.delete_subfolder(folder_in_folder.id)
         folder = FolderModel.objects.get(id=folderId)
         folder.delete()
+        
+class ShareFolder(APIView):
+    
+    def post(self,request, folderId):
+        
+        #verificar el token
+        token = request.headers.get('Authorization', '').split(' ')[1]
+        
+        try:
+            #decodificar el token
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+            
+            #obtener el id del usuario al cual se va compartir
+            shareuserId = request.data.get('shareUserId')
+            
+            principalFolder = FolderModel.objects.get(id=folderId, userId=user_id)
+            
+            folder_copy = self.copy_folder(principalFolder, shareuserId)
+            folder_copy.save()
+            
+            self.copy_files(folder_copy.id, principalFolder.id, shareuserId)
+            
+            return Response({'message': 'Carpeta compartida correctamente'})
+        except jwt.exceptions.InvalidTokenError:
+            return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+    #funcion para copiar la informacion y duplicarla recursivamente
+    def copy_folder(self, folder, sharedUserId):
+        
+        #crear la copia de la carpeta para duplicarla
+        folder_copy = FolderModel.objects.create(
+            folderName=folder.folderName,
+            storage=folder.storage,
+            userId=sharedUserId,
+            parentFolder=0
+        )
+        
+        self.copy_subfolder(folder_copy.id, folder, sharedUserId)
+        
+        return folder_copy
+    
+    #funcion para copiar la informacion y duplicarla recursivamente subfolder
+    def copy_folderBySubFolder(self, folder, sharedUserId, newParentId):
+        
+        #crear la copia de la carpeta para duplicarla
+        folder_copy = FolderModel.objects.create(
+            folderName=folder.folderName,
+            storage=folder.storage,
+            userId=sharedUserId,
+            parentFolder=newParentId
+        )
+        
+        return folder_copy
+    
+    #copiar los archivos y duplicarlos
+    def copy_files(self, newFolderId, oldFolderId, sharedUserId):
+        
+        files = FileModel.objects.filter(folderParent=oldFolderId)
+        
+        for file in files:
+            
+            file_copy = self.change_paths_file_copy(file, newFolderId, sharedUserId)
+            file_copy.save()
+            
+    #cambiar la referncia del archivo para la misma ruta
+    def change_paths_file_copy(self, file, newFolderId, sharedUserId):
+        
+        file_copy = FileModel.objects.create(
+            fileName=file.fileName,
+            folderParent=newFolderId,
+            userId=sharedUserId
+        )
+        
+        paths = FilePaths.objects.filter(file=file.id)
+        
+        for path in paths:
+            path_copy = FilePaths.objects.create(
+                file=file_copy,
+                filePath=path.filePath
+            )
+        
+        return file_copy
+    
+    def copy_subfolder(self, newFolderId, oldFolderId, sharedUserId):
+        
+        subfolders = FolderModel.objects.filter(parentFolder=oldFolderId.id)
+        for subfolder in subfolders:
+            
+            subfolder_copy = self.copy_folderBySubFolder(subfolder, sharedUserId, newFolderId)
+            subfolder_copy.save()
+            
+            self.copy_files(subfolder_copy.id, subfolder.id, sharedUserId)
+            self.copy_subfolder(subfolder_copy.id, subfolder, sharedUserId)
+            
+        

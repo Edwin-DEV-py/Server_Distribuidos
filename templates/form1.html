@@ -13,5 +13,9 @@
         <input type="hidden" name="token" value="{{ token }}">
         <button type="submit">Enviar</button>
     </form>
+    
+    <h2>probar descargar</h2>
+
+    <a href="{% url 'descargar_archivo' 'example/FormatoFacturaAutodeclarable.pdf' %}">Descargar archivo</a>
 </body>
 </html>

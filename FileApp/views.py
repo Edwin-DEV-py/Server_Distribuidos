@@ -15,10 +15,13 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 import requests
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.conf import settings
+import os
 import jwt
 from django.db import transaction
 from FolderApp.models import FolderModel
 from django.db.models import F
+from django.http import HttpResponse
+import mimetypes
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -87,6 +90,60 @@ class FilePostView(APIView):
             return Response(file_send_list, status=status.HTTP_201_CREATED)
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+#Funcion para guardar archivos con el id del usuario
+class FilePostViewByUserId(APIView):
+    
+    parser_classes = (MultiPartParser, FormParser)
+    def post(self,request, *args, **kwargs):
+            user_id = request.data.get('user_id')
+            
+            folder_id = request.data.get('folderParent')
+            if folder_id is None:
+                folder_id = 0
+            
+            files = request.FILES.getlist('files')
+            file_send_list = []
+            
+            print(files)
+            for file in files:
+                file_name = file.name
+                file_size = file.size
+                print(file_size)
+                data = {
+                    'userId': user_id,
+                    'fileName': file_name,
+                    'folderParent': folder_id
+                }
+                serializers = FileSerializer(data=data)
+                
+                if serializers.is_valid():
+                    
+                    #transaccion atomica para evitar perdida de datos
+                    with transaction.atomic():
+                        instance = serializers.save()
+                        file_send_list.append(data)
+                        
+                        #datos que seran enviados al servidor
+                        data_send_server = {
+                            'userId': user_id,
+                            'file': file,
+                            'file_id': instance.id
+                        }
+                        
+                        #actualizar el espacio del folder
+                        if folder_id != 0:
+                            update_storage_folder = FolderModel.objects.get(id=folder_id)
+                            update_storage_folder.storage = F('storage') + file_size
+                            update_storage_folder.save()
+                        
+                        response = Send_data_to_FileServer(data_send_server)
+                        if not response:
+                            raise Exception("Ocurrio un error con el servidor de archivos")
+                else:
+                    return Response(serializers.errors)
+                
+            return Response(file_send_list, status=status.HTTP_201_CREATED)
 
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):
@@ -191,3 +248,54 @@ class UpdateFile(APIView):
 
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class DownloadFileView(APIView):
+    
+    def get(self, request, path):
+        
+        #para probar
+        pathFile = os.path.join(settings.MEDIA_ROOT, path)
+        
+        if os.path.exists(pathFile):
+            
+            content_type, _ = mimetypes.guess_type(pathFile)
+            if content_type is None:
+                content_type = 'application/octet-stream'
+                
+            #abrir y leer el archivo
+            with open(pathFile, 'rb') as download:
+                
+                response = HttpResponse(download.read(), content_type=content_type)
+                response['Content-Disposition'] = f'attachment; filename="{os.path.basename(pathFile)}"'
+                return response
+        else:
+            return HttpResponse("El archivo solicitado no existe", status=404)
+        
+        
+#Descargar archivo desde el servidor donde esta almacenado
+class DownloadFileAPIView(APIView):
+    def post(self, request):
+        path = request.data.get('pathFile', None)
+
+        if path is None:
+            return Response("Debe proporcionar la URL", status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            #Solicitud al servidor de archivos
+            response = requests.get(path)
+            response.raise_for_status()
+            file = response.content
+
+            #Extraee el nombre del archivo
+            fileName = path.split('/')[-1]
+
+            response = Response(file, content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{fileName}"'
+            return response
+        
+        except requests.exceptions.RequestException as e:
+            return Response(f"No se pudo descargar el archivo: {str(e)}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+#Compartir un archivo a otro usuario

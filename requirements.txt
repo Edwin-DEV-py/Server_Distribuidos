@@ -1,0 +1,27 @@
+asgiref==3.7.2
+certifi==2024.2.2
+cffi==1.16.0
+charset-normalizer==3.3.2
+cryptography==42.0.5
+Django==5.0.2
+django-cors-headers==4.3.1
+django-soap==0.1.9
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+grpcio @ file:///C:/ci/grpcio_1655475084232/work
+grpcio-tools @ file:///C:/b/abs_2de4z1p2yx/croot/grpcio-tools_1678831652386/work
+idna==3.6
+lxml==5.2.0
+protobuf==3.20.3
+pycparser==2.21
+PyJWT==2.8.0
+python-dotenv==1.0.1
+pytz==2024.1
+requests==2.31.0
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+spyne==2.14.0
+sqlparse==0.4.4
+typing_extensions==4.10.0
+tzdata==2024.1
+urllib3==2.2.1
+xmltodict==0.9.2

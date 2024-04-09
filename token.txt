@@ -3,6 +3,13 @@ JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjo
 LA RUTA DEL ARCHIVO SE TIENE QUE GUARDAR Y EN EL NOMBRE DEL ARCHIVO SE LE DEBE CONCATENAR EL ID DE
 LA REFERENCIA AL ARCHIVO PARA QUE NO HAYAN DUPLICADOS.
 
+#comando gRPC
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. server.proto
+
+conda install -c conda-forge grpcio-tools
+
+
+
 #obtener carpetas y archivos
 http://127.0.0.1:8000/server/soap/?wsdl
 

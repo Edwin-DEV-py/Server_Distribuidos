@@ -10,5 +10,5 @@ urlpatterns  = [
     path('updateFolder/<int:folderId>/', UpdateFolder.as_view(), name="updateFolder"),
     path('shareFolder/<int:folderId>/', ShareFolder.as_view(), name='shareFolder'),
     #vista para peticiones SOAP
-    
+    path('soap/', my_soap_consulta())
 ]

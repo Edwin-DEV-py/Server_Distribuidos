@@ -259,3 +259,40 @@ class ShareFolder(APIView):
             self.copy_subfolder(subfolder_copy.id, subfolder, sharedUserId)
             
         
+
+#funciones llamadas desde el soap
+def deleteFolder(token, folderId):
+    try:
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        
+        # Verificar si la carpeta existe
+        if not FolderModel.objects.filter(id=folderId, userId=user_id).exists():
+            return "La carpeta no existe"
+        
+        # Eliminar los archivos en la carpeta
+        FileModel.objects.filter(folderParent=folderId, userId=user_id).delete()
+        
+        # Eliminar las subcarpetas
+        folders_in_folder = FolderModel.objects.filter(parentFolder=folderId, userId=user_id)
+        for folder_in_folder in folders_in_folder:
+            delete_subfolderBySoap(folder_in_folder.id)
+    
+        # Eliminar la carpeta
+        folder = FolderModel.objects.get(id=folderId, userId=user_id)
+        folder.delete()
+        
+        return "Se eliminó la carpeta correctamente"        
+    except jwt.exceptions.InvalidTokenError:
+        return "Token inválido"
+    except Exception as e:
+        return "Ocurrió un error al intentar eliminar la carpeta: {}".format(str(e))
+#funsion recursiva para borrar archivos de subfolders
+def delete_subfolderBySoap(self, folderId):
+    #Recursivamente eliminar subcarpetas y archivos
+    files_in_folder = FileModel.objects.filter(folderParent=folderId).delete()
+    folders_in_folder = FolderModel.objects.filter(parentFolder=folderId)
+    for folder_in_folder in folders_in_folder:
+        delete_subfolderBySoap(folder_in_folder.id)
+    folder = FolderModel.objects.get(id=folderId)
+    folder.delete()

@@ -135,6 +135,20 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
+    @rpc(Unicode, Unicode, _returns=Unicode)
+    def deleteFolderSoap(ctx, token, folderId):
+        try:
+            response = deleteFolder(token, folderId)
+            if response == "Se eliminó la carpeta correctamente":
+                return "Se eliminó la carpeta"
+            elif response == "La carpeta no existe":
+                return "La carpeta no existe"
+            else:
+                return "Ocurrió un error al intentar eliminar la carpeta"
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+    
+    
     @rpc()
     def get_hole(ctx):
         return "hola"

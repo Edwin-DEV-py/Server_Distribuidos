@@ -147,6 +147,18 @@ class SoapService(ServiceBase):
                 return "Ocurrió un error al intentar eliminar la carpeta"
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
+        
+    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    def shareFolderSoap(ctx, token, folderId, user):
+        try:
+            response = ShareFolderBySoap().post(token, folderId, user)
+            
+            if response == 'Carpeta compartida correctamente':
+                return 'Carpeta compartida correctamente'
+            else:
+                return 'La carpeta no se pudo compartir'
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
     
     
     @rpc()

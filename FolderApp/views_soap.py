@@ -98,7 +98,27 @@ class SoapService(ServiceBase):
             return all_items
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
+        
+    @rpc(Unicode, Unicode, Unicode, _returns=FolderSoapModel)
+    def registerFolderSoap(ctx, token, folderName, parentFolder):
+        try:
+            user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+            user_id = user['user_id']
+            
+            folder_instance = FolderModel.objects.create(
+                folderName=folderName,
+                userId=user_id,
+                parentFolder=parentFolder,
+            )
 
+            return FolderSoapModel(id=folder_instance.id, folderName=folder_instance.folderName, storage=folder_instance.storage, userId=folder_instance.userId, parentFolder=folder_instance.parentFolder, createdAt=folder_instance.createdAt)
+        
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+        
+    @rpc()
+    def get_hole(ctx):
+        return "hola"
     
 my_soap = Application(
     [SoapService],

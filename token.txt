@@ -15,3 +15,15 @@ http://127.0.0.1:8000/server/soap/?wsdl
       </web:get_folders_by_parent_id>
    </soapenv:Body>
 </soapenv:Envelope>
+
+#crear carpeta
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:registerFolderSoap>
+         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+        <tns:folderName>CarpetaSoap</tns:folderName>
+        <tns:parentFolder>0</tns:parentFolder>
+      </tns:registerFolderSoap>
+   </soapenv:Body>
+</soapenv:Envelope>

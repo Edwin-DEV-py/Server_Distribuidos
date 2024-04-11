@@ -22,6 +22,9 @@ from FolderApp.models import FolderModel
 from django.db.models import F
 from django.http import HttpResponse
 import mimetypes
+from rest_framework.decorators import parser_classes
+import base64
+import re
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -92,58 +95,47 @@ class FilePostView(APIView):
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
         
 #Funcion para guardar archivos con el id del usuario
-class FilePostViewByUserId(APIView):
+@parser_classes((MultiPartParser, FormParser))
+def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
     
-    parser_classes = (MultiPartParser, FormParser)
-    def post(self,request, *args, **kwargs):
-            user_id = request.data.get('user_id')
+    user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+    user_id = user['user_id']
+
+    if folder_id is None:
+            folder_id = 0
             
-            folder_id = request.data.get('folderParent')
-            if folder_id is None:
-                folder_id = 0
+    data = {
+        'userId': user_id,
+        'fileName': fileName,
+        'folderParent': 0
+    }
+    serializers = FileSerializer(data=data)
+    if serializers.is_valid():
+        
+        #transacción atómica para evitar pérdida de datos
+        with transaction.atomic():
+            instance = serializers.save()
             
-            files = request.FILES.getlist('files')
-            file_send_list = []
+            #datos que serán enviados al servidor
+            data_send_server = {
+                'userId': user_id,
+                'file': file,
+                'file_id': instance.id
+            }
             
-            print(files)
-            for file in files:
-                file_name = file.name
-                file_size = file.size
-                print(file_size)
-                data = {
-                    'userId': user_id,
-                    'fileName': file_name,
-                    'folderParent': folder_id
-                }
-                serializers = FileSerializer(data=data)
-                
-                if serializers.is_valid():
-                    
-                    #transaccion atomica para evitar perdida de datos
-                    with transaction.atomic():
-                        instance = serializers.save()
-                        file_send_list.append(data)
-                        
-                        #datos que seran enviados al servidor
-                        data_send_server = {
-                            'userId': user_id,
-                            'file': file,
-                            'file_id': instance.id
-                        }
-                        
-                        #actualizar el espacio del folder
-                        if folder_id != 0:
-                            update_storage_folder = FolderModel.objects.get(id=folder_id)
-                            update_storage_folder.storage = F('storage') + file_size
-                            update_storage_folder.save()
-                        
-                        response = Send_data_to_FileServer(data_send_server)
-                        if not response:
-                            raise Exception("Ocurrio un error con el servidor de archivos")
-                else:
-                    return Response(serializers.errors)
-                
-            return Response(file_send_list, status=status.HTTP_201_CREATED)
+            #actualizar el espacio del folder
+            if folder_id != 0:
+                update_storage_folder = FolderModel.objects.get(id=folder_id)
+                update_storage_folder.storage = F('storage') + fileSize
+                update_storage_folder.save()
+            
+            response = Send_data_to_FileServer(data_send_server)
+            if not response:
+                raise Exception("Ocurrió un error con el servidor de archivos")
+    else:
+        return Response(serializers.errors)
+    
+    return Response(data, status=status.HTTP_201_CREATED)
 
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):

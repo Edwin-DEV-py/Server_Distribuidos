@@ -70,3 +70,6 @@ http://127.0.0.1:8000/server/soap/?wsdl
       </tns:shareFolderSoap>
    </soapenv:Body>
 </soapenv:Envelope>
+
+
+###########################soap para imagenes

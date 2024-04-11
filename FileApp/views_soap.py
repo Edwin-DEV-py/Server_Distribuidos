@@ -39,6 +39,34 @@ class SoapServiceFiles(ServiceBase):
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
         
+    @rpc(Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
+    def update_file(ctx, token, fileId ,fileName, folderParent):
+        try:
+
+            response = updateFile(token, fileId,fileName, folderParent)
+            if response.status_code == 203:
+                return 'actualizado correctamente'
+            else:
+                return 'no se actualizo el archivo'
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+        except Exception as e:
+            return f"Ocurrió un error al procesar el archivo: {str(e)}"
+        
+    @rpc(Unicode, Unicode, _returns=Unicode)
+    def delete_file(ctx, token, fileId):
+        try:
+
+            response = deleteFile(token, fileId)
+            if response.status_code == 200:
+                return 'eliminado correctamente'
+            else:
+                return 'no se elimino el archivo'
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+        except Exception as e:
+            return f"Ocurrió un error al procesar el archivo: {str(e)}"
+        
 my_soap = Application(
     [SoapServiceFiles],
     tns='django.soap.files',

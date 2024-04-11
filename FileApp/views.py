@@ -241,6 +241,58 @@ class UpdateFile(APIView):
         except jwt.exceptions.InvalidTokenError:
             return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
 
+#editar archivo con soap
+def updateFile(token, fileId, fileName, folderParent):
+        
+    #verificar el token
+    user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+    user_id = user['user_id']
+    
+    try:
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        file = FileModel.objects.get(userId=user_id, id=fileId)
+        
+        if folderParent is not None:
+            file.folderParent = folderParent
+        file.fileName = fileName
+        
+        file.save()
+        serializers = FileSerializer(file)
+        return Response(serializers.data)
+        
+    except jwt.exceptions.InvalidTokenError:
+        return "Token inválido"
+
+#eliminar archivo con soap
+def deleteFile(token, filesId):
+        
+    #verificar el token
+    user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+    user_id = user['user_id']
+    
+    try:
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        
+        if isinstance(filesId, list):
+            for file_id in filesId:
+                try:
+                    file = FileModel.objects.get(userId=user_id, id=file_id)
+                    file.delete()
+                except FileModel.DoesNotExist:
+                    pass
+        else:
+            file_id[0] = filesId
+            try:
+                file = FileModel.objects.get(userId=user_id, id=file_id)
+                file.delete()
+            except FileModel.DoesNotExist:
+                pass
+        
+    except jwt.exceptions.InvalidTokenError:
+        return "Token inválido"
+
 
 class DownloadFileView(APIView):
     

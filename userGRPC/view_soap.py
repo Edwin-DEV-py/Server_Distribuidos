@@ -1,0 +1,80 @@
+from django.views.decorators.csrf import csrf_exempt
+from spyne.application import Application
+from spyne.decorator import rpc
+from spyne.model.primitive import Unicode, Integer, Double, String, DateTime, Date
+from spyne.protocol.soap import Soap11
+from spyne.server.django import DjangoApplication
+from spyne.service import ServiceBase
+import json
+from spyne import Iterable, Array
+from spyne import ComplexModel
+from django.forms.models import model_to_dict
+from django.db import IntegrityError
+from spyne.error import ResourceNotFoundError
+from spyne.model.fault import Fault
+from django.db.models.deletion import ProtectedError
+from .views import *
+from django.http import HttpResponse, HttpRequest
+from django.db.models import Sum
+from spyne.error import ResourceNotFoundError
+from .serializers import *
+import os
+from .models import *
+from collections import OrderedDict
+import base64
+
+class SoapServiceUser(ServiceBase):
+    
+    @rpc(Unicode, Unicode, _returns=Unicode)
+    def loginSoap(ctx, username, password):
+        
+        #crear peticion http post para la vista que tiene la ogica
+        
+        request = HttpRequest()
+        request.data = {'username': username, 'password': password}
+        
+        login_view = AuthenticationView.as_view()
+        response = login_view(request)
+        
+        if 'token' in response.data:
+            return response.data['token']
+        elif 'error_message' in response.data:
+            return response.data['error_message']
+        else:
+            return 'Error desconocido'
+        
+    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
+    def resgisterSoap(ctx, username, name, email, phone, password):
+        
+        request = HttpRequest()
+        request.data = {
+            'username': username,
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'password': password
+        }
+        
+        register_view = RegisterViewGRPC.as_view()
+        response = register_view(request)
+        
+        if 'message' in response.data:
+            return response.data['message']
+        elif 'error_message' in response.data:
+            return response.data['error_message']
+        else:
+            return 'Error desconocido'
+    
+my_soap = Application(
+    [SoapServiceUser],
+    tns='django.soap.users',
+    in_protocol=Soap11(validator='lxml'),
+    out_protocol=Soap11(),
+)
+
+def my_soap_consulta_users():
+    
+    django_app = DjangoApplication(my_soap)
+    my_soap_app = csrf_exempt(django_app)
+    
+    return my_soap_app

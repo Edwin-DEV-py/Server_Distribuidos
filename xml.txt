@@ -1,0 +1,471 @@
+------------------------------------XML PARA LAS CARPETAS---------------------------------------------------
+RUTAS PARA EL ENDPOINT, TODAS LAS SOLICITUDES SE HACEN EN FORMA DE POST:
+http://127.0.0.1:8000/server/soap/?wsdl
+
+ARCHIVO XML COMPLETO:
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:plink="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:wsdlsoap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdlsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap11enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap11env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12env="http://www.w3.org/2003/05/soap-envelope" xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xop="http://www.w3.org/2004/08/xop/include" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="django.soap.example" xmlns:s0="folders" xmlns:s1="filesAndFolders" targetNamespace="django.soap.example" name="Application">
+<wsdl:types>
+<xs:schema targetNamespace="django.soap.example" elementFormDefault="qualified">
+<xs:import namespace="folders"/>
+<xs:import namespace="filesAndFolders"/>
+<xs:complexType name="get_hole"/>
+<xs:complexType name="get_holeResponse"/>
+<xs:complexType name="list"/>
+<xs:complexType name="stringArray">
+<xs:sequence>
+<xs:element name="string" type="xs:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="deleteFolderSoap">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderId" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="deleteFolderSoapResponse">
+<xs:sequence>
+<xs:element name="deleteFolderSoapResult" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="get_folders_by_parent_id">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="parentFolder" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="registerFolderSoap">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="parentFolder" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="registerFolderSoapResponse">
+<xs:sequence>
+<xs:element name="registerFolderSoapResult" type="s0:FolderSoapModel" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="shareFolderSoap">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderId" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="user" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="shareFolderSoapResponse">
+<xs:sequence>
+<xs:element name="shareFolderSoapResult" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="updateFolderSoap">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderId" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="parentFolder" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="updateFolderSoapResponse">
+<xs:sequence>
+<xs:element name="updateFolderSoapResult" type="s0:FolderSoapModel" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="listResponse">
+<xs:sequence>
+<xs:element name="listResult" type="s0:FolderSoapModelArray" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="get_folders_by_parent_idResponse">
+<xs:sequence>
+<xs:element name="files" type="s1:FileAndFolderModelArray" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="get_hole" type="tns:get_hole"/>
+<xs:element name="get_holeResponse" type="tns:get_holeResponse"/>
+<xs:element name="list" type="tns:list"/>
+<xs:element name="stringArray" type="tns:stringArray"/>
+<xs:element name="deleteFolderSoap" type="tns:deleteFolderSoap"/>
+<xs:element name="deleteFolderSoapResponse" type="tns:deleteFolderSoapResponse"/>
+<xs:element name="get_folders_by_parent_id" type="tns:get_folders_by_parent_id"/>
+<xs:element name="registerFolderSoap" type="tns:registerFolderSoap"/>
+<xs:element name="registerFolderSoapResponse" type="tns:registerFolderSoapResponse"/>
+<xs:element name="shareFolderSoap" type="tns:shareFolderSoap"/>
+<xs:element name="shareFolderSoapResponse" type="tns:shareFolderSoapResponse"/>
+<xs:element name="updateFolderSoap" type="tns:updateFolderSoap"/>
+<xs:element name="updateFolderSoapResponse" type="tns:updateFolderSoapResponse"/>
+<xs:element name="listResponse" type="tns:listResponse"/>
+<xs:element name="get_folders_by_parent_idResponse" type="tns:get_folders_by_parent_idResponse"/>
+</xs:schema>
+<xs:schema targetNamespace="folders" elementFormDefault="qualified">
+<xs:complexType name="FolderSoapModel">
+<xs:sequence>
+<xs:element name="id" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="folderName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="storage" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="userId" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="parentFolder" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="createdAt" type="xs:dateTime" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FolderSoapModelArray">
+<xs:sequence>
+<xs:element name="FolderSoapModel" type="s0:FolderSoapModel" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="FolderSoapModel" type="s0:FolderSoapModel"/>
+<xs:element name="FolderSoapModelArray" type="s0:FolderSoapModelArray"/>
+</xs:schema>
+<xs:schema targetNamespace="filesAndFolders" elementFormDefault="qualified">
+<xs:import namespace="django.soap.example"/>
+<xs:complexType name="FileAndFolderModel">
+<xs:sequence>
+<xs:element name="id" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="folderName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="storage" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="userId" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="parentFolder" type="xs:integer" minOccurs="0" nillable="true"/>
+<xs:element name="createdAt" type="xs:dateTime" minOccurs="0" nillable="true"/>
+<xs:element name="type" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="paths" type="tns:stringArray" minOccurs="0" nillable="true"/>
+<xs:element name="extension" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FileAndFolderModelArray">
+<xs:sequence>
+<xs:element name="FileAndFolderModel" type="s1:FileAndFolderModel" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="FileAndFolderModel" type="s1:FileAndFolderModel"/>
+<xs:element name="FileAndFolderModelArray" type="s1:FileAndFolderModelArray"/>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="list">
+<wsdl:part name="list" element="tns:list"/>
+</wsdl:message>
+<wsdl:message name="listResponse">
+<wsdl:part name="listResponse" element="tns:listResponse"/>
+</wsdl:message>
+<wsdl:message name="get_folders_by_parent_id">
+<wsdl:part name="get_folders_by_parent_id" element="tns:get_folders_by_parent_id"/>
+</wsdl:message>
+<wsdl:message name="get_folders_by_parent_idResponse">
+<wsdl:part name="get_folders_by_parent_idResponse" element="tns:get_folders_by_parent_idResponse"/>
+</wsdl:message>
+<wsdl:message name="registerFolderSoap">
+<wsdl:part name="registerFolderSoap" element="tns:registerFolderSoap"/>
+</wsdl:message>
+<wsdl:message name="registerFolderSoapResponse">
+<wsdl:part name="registerFolderSoapResponse" element="tns:registerFolderSoapResponse"/>
+</wsdl:message>
+<wsdl:message name="updateFolderSoap">
+<wsdl:part name="updateFolderSoap" element="tns:updateFolderSoap"/>
+</wsdl:message>
+<wsdl:message name="updateFolderSoapResponse">
+<wsdl:part name="updateFolderSoapResponse" element="tns:updateFolderSoapResponse"/>
+</wsdl:message>
+<wsdl:message name="deleteFolderSoap">
+<wsdl:part name="deleteFolderSoap" element="tns:deleteFolderSoap"/>
+</wsdl:message>
+<wsdl:message name="deleteFolderSoapResponse">
+<wsdl:part name="deleteFolderSoapResponse" element="tns:deleteFolderSoapResponse"/>
+</wsdl:message>
+<wsdl:message name="shareFolderSoap">
+<wsdl:part name="shareFolderSoap" element="tns:shareFolderSoap"/>
+</wsdl:message>
+<wsdl:message name="shareFolderSoapResponse">
+<wsdl:part name="shareFolderSoapResponse" element="tns:shareFolderSoapResponse"/>
+</wsdl:message>
+<wsdl:message name="get_hole">
+<wsdl:part name="get_hole" element="tns:get_hole"/>
+</wsdl:message>
+<wsdl:message name="get_holeResponse">
+<wsdl:part name="get_holeResponse" element="tns:get_holeResponse"/>
+</wsdl:message>
+<wsdl:service name="SoapService">
+<wsdl:port name="Application" binding="tns:Application">
+<wsdlsoap11:address location="http://127.0.0.1:8000/server/soap/"/>
+</wsdl:port>
+</wsdl:service>
+<wsdl:portType name="Application">
+<wsdl:operation name="list" parameterOrder="list">
+<wsdl:input name="list" message="tns:list"/>
+<wsdl:output name="listResponse" message="tns:listResponse"/>
+</wsdl:operation>
+<wsdl:operation name="get_folders_by_parent_id" parameterOrder="get_folders_by_parent_id">
+<wsdl:input name="get_folders_by_parent_id" message="tns:get_folders_by_parent_id"/>
+<wsdl:output name="get_folders_by_parent_idResponse" message="tns:get_folders_by_parent_idResponse"/>
+</wsdl:operation>
+<wsdl:operation name="registerFolderSoap" parameterOrder="registerFolderSoap">
+<wsdl:input name="registerFolderSoap" message="tns:registerFolderSoap"/>
+<wsdl:output name="registerFolderSoapResponse" message="tns:registerFolderSoapResponse"/>
+</wsdl:operation>
+<wsdl:operation name="updateFolderSoap" parameterOrder="updateFolderSoap">
+<wsdl:input name="updateFolderSoap" message="tns:updateFolderSoap"/>
+<wsdl:output name="updateFolderSoapResponse" message="tns:updateFolderSoapResponse"/>
+</wsdl:operation>
+<wsdl:operation name="deleteFolderSoap" parameterOrder="deleteFolderSoap">
+<wsdl:input name="deleteFolderSoap" message="tns:deleteFolderSoap"/>
+<wsdl:output name="deleteFolderSoapResponse" message="tns:deleteFolderSoapResponse"/>
+</wsdl:operation>
+<wsdl:operation name="shareFolderSoap" parameterOrder="shareFolderSoap">
+<wsdl:input name="shareFolderSoap" message="tns:shareFolderSoap"/>
+<wsdl:output name="shareFolderSoapResponse" message="tns:shareFolderSoapResponse"/>
+</wsdl:operation>
+<wsdl:operation name="get_hole" parameterOrder="get_hole">
+<wsdl:input name="get_hole" message="tns:get_hole"/>
+<wsdl:output name="get_holeResponse" message="tns:get_holeResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="Application" type="tns:Application">
+<wsdlsoap11:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="list">
+<wsdlsoap11:operation soapAction="list" style="document"/>
+<wsdl:input name="list">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="listResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="get_folders_by_parent_id">
+<wsdlsoap11:operation soapAction="get_folders_by_parent_id" style="document"/>
+<wsdl:input name="get_folders_by_parent_id">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="get_folders_by_parent_idResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="registerFolderSoap">
+<wsdlsoap11:operation soapAction="registerFolderSoap" style="document"/>
+<wsdl:input name="registerFolderSoap">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="registerFolderSoapResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="updateFolderSoap">
+<wsdlsoap11:operation soapAction="updateFolderSoap" style="document"/>
+<wsdl:input name="updateFolderSoap">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="updateFolderSoapResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="deleteFolderSoap">
+<wsdlsoap11:operation soapAction="deleteFolderSoap" style="document"/>
+<wsdl:input name="deleteFolderSoap">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="deleteFolderSoapResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="shareFolderSoap">
+<wsdlsoap11:operation soapAction="shareFolderSoap" style="document"/>
+<wsdl:input name="shareFolderSoap">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="shareFolderSoapResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="get_hole">
+<wsdlsoap11:operation soapAction="get_hole" style="document"/>
+<wsdl:input name="get_hole">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="get_holeResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+</wsdl:definitions>
+
+ENDPOINT QUE LE TIENEN QUE HACER POST TAL CUAL COMO SE LES MUESTRA ABAJO, ES XML:
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:get_folders_by_parent_id>
+         <web:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</web:token>
+         <web:parentFolder>4</web:parentFolder>
+      </web:get_folders_by_parent_id>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+#crear carpeta
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:registerFolderSoap>
+         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+        <tns:folderName>CarpetaSoap</tns:folderName>
+        <tns:parentFolder>0</tns:parentFolder>
+      </tns:registerFolderSoap>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+#actualizar carpeta
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:updateFolderSoap>
+         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+         <tns:folderId>16</tns:folderId>
+         <tns:folderName>CarpetaSoap UP</tns:folderName>
+         <tns:parentFolder>0</tns:parentFolder>
+      </tns:updateFolderSoap>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+#eliminar carpeta
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:deleteFolderSoap>
+         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+         <tns:folderId>16</tns:folderId>
+      </tns:deleteFolderSoap>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+#compartir una carpeta
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.example">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:shareFolderSoap>
+         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+         <tns:folderId>4</tns:folderId>
+         <tns:user>userSoap3</tns:user>
+      </tns:shareFolderSoap>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+----------------------------------------------------XML PARA ARCHIVO--------------------------------------------------------
+RUTAS PARA EL ENDPOINT, TODAS LAS SOLICITUDES SE HACEN EN FORMA DE POST:
+http://127.0.0.1:8000/files/soap/?wsdl
+
+ARCHIVO XML:
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:plink="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:wsdlsoap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdlsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap11enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap11env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12env="http://www.w3.org/2003/05/soap-envelope" xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xop="http://www.w3.org/2004/08/xop/include" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="django.soap.files" targetNamespace="django.soap.files" name="Application">
+<wsdl:types>
+<xs:schema targetNamespace="django.soap.files" elementFormDefault="qualified">
+<xs:complexType name="delete_file">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileId" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="delete_fileResponse">
+<xs:sequence>
+<xs:element name="delete_fileResult" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="process_file">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileSize" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="file" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderParent" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="process_fileResponse">
+<xs:sequence>
+<xs:element name="process_fileResult" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="update_file">
+<xs:sequence>
+<xs:element name="token" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileId" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="fileName" type="xs:string" minOccurs="0" nillable="true"/>
+<xs:element name="folderParent" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="update_fileResponse">
+<xs:sequence>
+<xs:element name="update_fileResult" type="xs:string" minOccurs="0" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="delete_file" type="tns:delete_file"/>
+<xs:element name="delete_fileResponse" type="tns:delete_fileResponse"/>
+<xs:element name="process_file" type="tns:process_file"/>
+<xs:element name="process_fileResponse" type="tns:process_fileResponse"/>
+<xs:element name="update_file" type="tns:update_file"/>
+<xs:element name="update_fileResponse" type="tns:update_fileResponse"/>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="process_file">
+<wsdl:part name="process_file" element="tns:process_file"/>
+</wsdl:message>
+<wsdl:message name="process_fileResponse">
+<wsdl:part name="process_fileResponse" element="tns:process_fileResponse"/>
+</wsdl:message>
+<wsdl:message name="update_file">
+<wsdl:part name="update_file" element="tns:update_file"/>
+</wsdl:message>
+<wsdl:message name="update_fileResponse">
+<wsdl:part name="update_fileResponse" element="tns:update_fileResponse"/>
+</wsdl:message>
+<wsdl:message name="delete_file">
+<wsdl:part name="delete_file" element="tns:delete_file"/>
+</wsdl:message>
+<wsdl:message name="delete_fileResponse">
+<wsdl:part name="delete_fileResponse" element="tns:delete_fileResponse"/>
+</wsdl:message>
+<wsdl:service name="SoapServiceFiles">
+<wsdl:port name="Application" binding="tns:Application">
+<wsdlsoap11:address location="http://127.0.0.1:8000/files/soap/"/>
+</wsdl:port>
+</wsdl:service>
+<wsdl:portType name="Application">
+<wsdl:operation name="process_file" parameterOrder="process_file">
+<wsdl:input name="process_file" message="tns:process_file"/>
+<wsdl:output name="process_fileResponse" message="tns:process_fileResponse"/>
+</wsdl:operation>
+<wsdl:operation name="update_file" parameterOrder="update_file">
+<wsdl:input name="update_file" message="tns:update_file"/>
+<wsdl:output name="update_fileResponse" message="tns:update_fileResponse"/>
+</wsdl:operation>
+<wsdl:operation name="delete_file" parameterOrder="delete_file">
+<wsdl:input name="delete_file" message="tns:delete_file"/>
+<wsdl:output name="delete_fileResponse" message="tns:delete_fileResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="Application" type="tns:Application">
+<wsdlsoap11:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="process_file">
+<wsdlsoap11:operation soapAction="process_file" style="document"/>
+<wsdl:input name="process_file">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="process_fileResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="update_file">
+<wsdlsoap11:operation soapAction="update_file" style="document"/>
+<wsdl:input name="update_file">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="update_fileResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="delete_file">
+<wsdlsoap11:operation soapAction="delete_file" style="document"/>
+<wsdl:input name="delete_file">
+<wsdlsoap11:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="delete_fileResponse">
+<wsdlsoap11:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+</wsdl:definitions>
+

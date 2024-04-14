@@ -56,22 +56,26 @@ class RegisterViewGRPC(APIView):
             phone = serializers.validated_data.get('phone')
             password = serializers.validated_data.get('password')
             
-            url = 'http://10.152.164.94:8000/api/register/'
-            data = {
-                "username":username,
-                "name":name,
-                "email":email,
-                "phone":phone,
-                "password":password
-            }
+            channel = grpc.insecure_channel('127.0.0.1:50051')
+            stub = grpc_pb2_grpc.RegisterServiceStub(channel)
             
-            response = requests.post(url, json = data)
+            userData = grpc_pb2.UserCredentialsRegister(
+                username=username,
+                name=name,
+                email=email,
+                phone=phone,
+                password=password
+            )
+            
+            register = stub.RegisterUser(userData)
+            
+            if register.success:
+                return Response({'message': register.mensagge})
+            else:
+                return Response({'error_message': register.error_message})
 
-            print(response.text)
-
-            return Response(response.json())
-
-        return Response(serializers.errors)
+        else:
+            return Response(serializers.errors, status=400)
             
 
 class VerifyUserView(APIView):

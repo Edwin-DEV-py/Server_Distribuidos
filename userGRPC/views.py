@@ -89,3 +89,35 @@ class VerifyUserView(APIView):
         print(user)
         
         return Response({"message:": user.username})
+
+
+#login soap
+def loginSoapView(username, password):
+    
+    serializers = UserCredentialsSerializer(data={'username': username, 'password': password})
+    
+    if serializers.is_valid():
+        
+        username = serializers.validated_data.get('username')
+        password = serializers.validated_data.get('password')
+        
+        #conexion gRPC con el server de usuarios
+        
+        channel = grpc.insecure_channel('127.0.0.1:50051')
+        stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
+        
+        #crear el mensjae
+        credentials = grpc_pb2.UserCredentials(username=username,password=password)
+        
+        #llamar al metodo
+        authentication = stub.AuthenticateUser(credentials)
+        
+        #procesar la respuesta del servidor
+        if authentication.success:
+            return {'token': authentication.token}
+        
+        else:
+            return {'error_message': authentication.error_message}
+        
+    else:
+        return serializers.errors

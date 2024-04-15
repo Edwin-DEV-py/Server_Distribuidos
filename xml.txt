@@ -469,3 +469,107 @@ ARCHIVO XML:
 </wsdl:binding>
 </wsdl:definitions>
 
+
+--------------------------------------------------XML PARA USUARIOS-----------------------------------
+URL:http://127.0.0.1:8000/users/soap/?wsdl
+
+XML:
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:plink="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:wsdlsoap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdlsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap11enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap11env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12env="http://www.w3.org/2003/05/soap-envelope" xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xop="http://www.w3.org/2004/08/xop/include" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="django.soap.users" targetNamespace="django.soap.users" name="Application">
+    <wsdl:types>
+        <xs:schema targetNamespace="django.soap.users" elementFormDefault="qualified">
+            <xs:complexType name="loginSoap">
+                <xs:sequence>
+                    <xs:element name="username" type="xs:string" minOccurs="0" nillable="true"/>
+                    <xs:element name="password" type="xs:string" minOccurs="0" nillable="true"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="loginSoapResponse">
+                <xs:sequence>
+                    <xs:element name="loginSoapResult" type="xs:string" minOccurs="0" nillable="true"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="resgisterSoap">
+                <xs:sequence>
+                    <xs:element name="username" type="xs:string" minOccurs="0" nillable="true"/>
+                    <xs:element name="name" type="xs:string" minOccurs="0" nillable="true"/>
+                    <xs:element name="email" type="xs:string" minOccurs="0" nillable="true"/>
+                    <xs:element name="phone" type="xs:string" minOccurs="0" nillable="true"/>
+                    <xs:element name="password" type="xs:string" minOccurs="0" nillable="true"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="resgisterSoapResponse">
+                <xs:sequence>
+                    <xs:element name="resgisterSoapResult" type="xs:string" minOccurs="0" nillable="true"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="loginSoap" type="tns:loginSoap"/>
+            <xs:element name="loginSoapResponse" type="tns:loginSoapResponse"/>
+            <xs:element name="resgisterSoap" type="tns:resgisterSoap"/>
+            <xs:element name="resgisterSoapResponse" type="tns:resgisterSoapResponse"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="loginSoap">
+        <wsdl:part name="loginSoap" element="tns:loginSoap"/>
+    </wsdl:message>
+    <wsdl:message name="loginSoapResponse">
+        <wsdl:part name="loginSoapResponse" element="tns:loginSoapResponse"/>
+    </wsdl:message>
+    <wsdl:message name="resgisterSoap">
+        <wsdl:part name="resgisterSoap" element="tns:resgisterSoap"/>
+    </wsdl:message>
+    <wsdl:message name="resgisterSoapResponse">
+        <wsdl:part name="resgisterSoapResponse" element="tns:resgisterSoapResponse"/>
+    </wsdl:message>
+    <wsdl:service name="SoapServiceUser">
+        <wsdl:port name="Application" binding="tns:Application">
+            <wsdlsoap11:address location="http://127.0.0.1:8000/users/soap/"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="Application">
+        <wsdl:operation name="loginSoap" parameterOrder="loginSoap">
+            <wsdl:input name="loginSoap" message="tns:loginSoap"/>
+            <wsdl:output name="loginSoapResponse" message="tns:loginSoapResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="resgisterSoap" parameterOrder="resgisterSoap">
+            <wsdl:input name="resgisterSoap" message="tns:resgisterSoap"/>
+            <wsdl:output name="resgisterSoapResponse" message="tns:resgisterSoapResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="Application" type="tns:Application">
+        <wsdlsoap11:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="loginSoap">
+            <wsdlsoap11:operation soapAction="loginSoap" style="document"/>
+            <wsdl:input name="loginSoap">
+                <wsdlsoap11:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="loginSoapResponse">
+                <wsdlsoap11:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="resgisterSoap">
+            <wsdlsoap11:operation soapAction="resgisterSoap" style="document"/>
+            <wsdl:input name="resgisterSoap">
+                <wsdlsoap11:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="resgisterSoapResponse">
+                <wsdlsoap11:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>
+
+
+##metodo para hacer login con soap
+
+
+##metodo para registrarse con soap
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="django.soap.users">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:loginSoap>
+         <tns:username>username</tns:username>
+         <tns:password>password</tns:password>
+      </tns:loginSoap>
+   </soapenv:Body>
+</soapenv:Envelope>

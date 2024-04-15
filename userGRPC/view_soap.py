@@ -28,18 +28,12 @@ class SoapServiceUser(ServiceBase):
     @rpc(Unicode, Unicode, _returns=Unicode)
     def loginSoap(ctx, username, password):
         
-        #crear peticion http post para la vista que tiene la ogica
+        response_data = loginSoapView(username, password)
         
-        request = HttpRequest()
-        request.data = {'username': username, 'password': password}
-        
-        login_view = AuthenticationView.as_view()
-        response = login_view(request)
-        
-        if 'token' in response.data:
-            return response.data['token']
-        elif 'error_message' in response.data:
-            return response.data['error_message']
+        if 'token' in response_data:
+            return response_data['token']
+        elif 'error_message' in response_data:
+            return response_data['error_message']
         else:
             return 'Error desconocido'
         

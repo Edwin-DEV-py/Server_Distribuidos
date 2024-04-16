@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message FileUploadRequest {
+    string file_id = 1;
+    string owner_id = 2;
+    bytes binary_file = 3; 
+}
+
+message FileUploadResponse {
+    string file_id = 1;
+    repeated string urls = 2;
+}
+
+service FileService {
+    rpc Upload(stream FileUploadRequest) returns (FileUploadResponse);
+}

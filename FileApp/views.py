@@ -25,6 +25,9 @@ import mimetypes
 from rest_framework.decorators import parser_classes
 import base64
 import re
+import grpc
+import upload_pb2 as grpc_pb2
+import upload_pb2_grpc as grpc_pb2_grpc
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -140,19 +143,22 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):
     
-    server_url = ''
-    
     try:
-        """
-        CUANDO YA ESTE EL OTRO SERVIDOR SE HARA LA LOGICA ACA
-        response = requests.post(server_url, data=data)
         
-        #verificar la respuesta
-        if response.status_code == 200:
-            return True
-        else:
-            return False
-        """
+        channel = grpc.insecure_channel('127.0.0.1:50051')
+        stub = grpc_pb2_grpc.FileServiceStub(channel)
+        
+        fileData = grpc_pb2.FileUploadRequest(
+            file_id= data.get('file_id'),
+            owner_id= data.get('userId'),
+            binary_file= data.get('file')
+        )
+        
+        sendData = stub.Upload(fileData)
+        
+        if sendData:
+            print(sendData)
+            #return Response(sendData)
         
         example_response = {
             'file_id': data.get('file_id'),

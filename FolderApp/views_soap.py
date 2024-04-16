@@ -80,13 +80,13 @@ class SoapService(ServiceBase):
                 file.type = 'file'
                 
             #obtener los paths
-            file_paths = FilePaths.objects.filter(file__in=[file.id for file in files])
-            file_paths_data = {}
-            for file_path in file_paths:
-                file_paths_data.setdefault(file_path.file_id, []).append(file_path.filePath)
+            #file_paths = FilePaths.objects.filter(file__in=[file.id for file in files])
+            #file_paths_data = {}
+            #for file_path in file_paths:
+                #file_paths_data.setdefault(file_path.file_id, []).append(file_path.filePath)
             
             for file in files:
-                file.paths = file_paths_data.get(file.id, [])
+                #file.paths = file_paths_data.get(file.id, [])
                 
                 #obtener la extension dle archivo
                 file_name = file.fileName

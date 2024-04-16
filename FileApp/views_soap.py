@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from spyne.application import Application
 from spyne.decorator import rpc
-from spyne.model.primitive import Unicode, Integer, Double, String, DateTime, Date, base64Binary
+from spyne.model.primitive import Unicode, Integer, Double, String, DateTime, Date
 from spyne.protocol.soap import Soap11
 from spyne.server.django import DjangoApplication
 from spyne.service import ServiceBase
@@ -22,6 +22,9 @@ import os
 from .models import *
 from collections import OrderedDict
 import base64
+
+from spyne.model.binary import ByteArray
+base64Binary = ByteArray
 
 class SoapServiceFiles(ServiceBase):
     

@@ -145,7 +145,7 @@ def Send_data_to_FileServer(data):
     
     try:
         
-        channel = grpc.insecure_channel('127.0.0.1:50051')
+        channel = grpc.insecure_channel('172.171.240.20:5000')
         stub = grpc_pb2_grpc.FileServiceStub(channel)
         
         fileData = grpc_pb2.FileUploadRequest(

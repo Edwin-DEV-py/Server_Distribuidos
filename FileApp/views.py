@@ -106,7 +106,7 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
 
     if folder_id is None:
             folder_id = 0
-    print(file)
+        
     data = {
         'userId': user_id,
         'fileName': fileName,
@@ -142,12 +142,13 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
 
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):
-    
+    print(data)
     try:
         
         channel = grpc.insecure_channel('172.171.240.20:5000')
         stub = grpc_pb2_grpc.FileServiceStub(channel)
-        
+
+        print(data)
         fileData = grpc_pb2.FileUploadRequest(
             file_id= str(data.get('file_id')),
             owner_id= data.get('userId'),

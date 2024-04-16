@@ -149,7 +149,7 @@ def Send_data_to_FileServer(data):
         stub = grpc_pb2_grpc.FileServiceStub(channel)
         
         fileData = grpc_pb2.FileUploadRequest(
-            file_id= data.get('file_id'),
+            file_id= str(data.get('file_id')),
             owner_id= data.get('userId'),
             binary_file= data.get('file')
         )

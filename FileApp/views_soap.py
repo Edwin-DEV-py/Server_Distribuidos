@@ -23,15 +23,13 @@ from .models import *
 from collections import OrderedDict
 import base64
 
-from spyne.model.binary import ByteArray
-base64Binary = ByteArray
 
 class SoapServiceFiles(ServiceBase):
     
-    @rpc(Unicode, Unicode, Unicode, base64Binary, Unicode, _returns=Unicode)
+    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
     def process_file(ctx, token, fileName, fileSize, file, folderParent):
         try:
-
+            print(file)
             response = file_post_view_by_user_id(token, fileName, fileSize, file)
             if response.status_code == 201:
                 return 'Creado correctamente'

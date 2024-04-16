@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from spyne.application import Application
 from spyne.decorator import rpc
-from spyne.model.primitive import Unicode, Integer, Double, String, DateTime, Date
+from spyne.model.primitive import Unicode, Integer, Double, String, DateTime, Date, base64Binary
 from spyne.protocol.soap import Soap11
 from spyne.server.django import DjangoApplication
 from spyne.service import ServiceBase
@@ -25,7 +25,7 @@ import base64
 
 class SoapServiceFiles(ServiceBase):
     
-    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Unicode, Unicode, base64Binary, Unicode, _returns=Unicode)
     def process_file(ctx, token, fileName, fileSize, file, folderParent):
         try:
 

@@ -15,7 +15,7 @@ class FileServiceStub(object):
             channel: A grpc.Channel.
         """
         self.Upload = channel.stream_unary(
-                '/FileService/Upload',
+                '/proto.FileService/Upload',
                 request_serializer=upload__pb2.FileUploadRequest.SerializeToString,
                 response_deserializer=upload__pb2.FileUploadResponse.FromString,
                 )

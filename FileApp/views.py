@@ -144,8 +144,9 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
 def Send_data_to_FileServer(data):
     try:
         
-        #channel = grpc.insecure_channel('172.171.240.20:5000')
-        channel = grpc.insecure_channel('127.0.0.1:50051')
+        channel = grpc.insecure_channel('172.171.240.20:5000')
+        #channel = grpc.insecure_channel('127.0.0.1:50051')
+        
         stub = upload_pb2_grpc.FileServiceStub(channel)
 
         def generate_messages():

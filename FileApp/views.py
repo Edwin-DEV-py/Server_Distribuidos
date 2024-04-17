@@ -27,7 +27,7 @@ import base64
 import re
 import grpc
 import upload_pb2 as grpc_pb2
-import upload_pb2_grpc as grpc_pb2_grpc
+import upload_pb2_grpc
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -142,36 +142,28 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
 
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):
-    print(data)
     try:
         
-        channel = grpc.insecure_channel('172.171.240.20:5000')
-        stub = grpc_pb2_grpc.FileServiceStub(channel)
+        #channel = grpc.insecure_channel('172.171.240.20:5000')
+        channel = grpc.insecure_channel('127.0.0.1:50051')
+        stub = upload_pb2_grpc.FileServiceStub(channel)
 
-        print(data)
-        fileData = grpc_pb2.FileUploadRequest(
-            file_id= str(data.get('file_id')),
-            owner_id= data.get('userId'),
-            binary_file= data.get('file')
-        )
+        def generate_messages():
+            
+            yield grpc_pb2.FileUploadRequest(
+                file_id=str(data.get('file_id')),
+                owner_id=data.get('userId'),
+                binary_file=data.get('file').encode()
+            )
+
         
-        sendData = stub.Upload(fileData)
+        response = stub.Upload(generate_messages())
+
         
-        if sendData:
-            print(sendData)
-            #return Response(sendData)
+        file_id = response.file_id
+        urls = response.urls
         
-        example_response = {
-            'file_id': data.get('file_id'),
-            'urls': [
-                'ruta1/',
-                'ruta2/'
-            ]
-        }
-        
-        urls = example_response.get('urls')
-        
-        file_instance = FileModel.objects.get(id=example_response.get('file_id'))
+        file_instance = FileModel.objects.get(id=file_id)
         for url in urls:
             file_path = FilePaths(file=file_instance, filePath=url)
             file_path.save()

@@ -80,6 +80,20 @@ class SoapServiceFiles(ServiceBase):
             return "Token inválido"
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
+        
+    @rpc(Unicode, Unicode, _returns=Unicode)
+    def download_file(ctx, token, fileId):
+        try:
+
+            response = downloadByPath(token, fileId)
+            if isinstance(response, str):
+                return response
+            else:
+                return 'no se actualizo el archivo'
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+        except Exception as e:
+            return f"Ocurrió un error al procesar el archivo: {str(e)}"
 
 my_soap = Application(
     [SoapServiceFiles],

@@ -28,6 +28,7 @@ import re
 import grpc
 import upload_pb2 as grpc_pb2
 import upload_pb2_grpc
+import json
 
 #funcion para guardar archivos
 class FilePostView(APIView):
@@ -362,6 +363,27 @@ def shareFile(token, fileId, userShare):
         
         serializers = FileSerializer(new_file)
         return Response(serializers.data)
+        
+    except jwt.exceptions.InvalidTokenError:
+        return "Token inválido"
+    
+def downloadByPath(token, fileId):
+    
+    #verificar el token
+    user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+    user_id = user['user_id']
+    
+    try:
+        
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        
+        file = FileModel.objects.get(userId=user_id, id=fileId)
+        
+        paths = FilePaths.objects.filter(file=file)
+        path_list = [path.filePath for path in paths]
+        
+        return {"file_paths": path_list}
         
     except jwt.exceptions.InvalidTokenError:
         return "Token inválido"

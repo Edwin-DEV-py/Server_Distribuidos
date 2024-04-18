@@ -66,7 +66,21 @@ class SoapServiceFiles(ServiceBase):
             return "Token inválido"
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
-        
+
+    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    def share_file(ctx, token, fileId ,userShare):
+        try:
+
+            response = shareFile(token, fileId,userShare)
+            if response.status_code == 201:
+                return 'compartido correctamente'
+            else:
+                return 'no se actualizo el archivo'
+        except jwt.exceptions.InvalidTokenError:
+            return "Token inválido"
+        except Exception as e:
+            return f"Ocurrió un error al procesar el archivo: {str(e)}"
+
 my_soap = Application(
     [SoapServiceFiles],
     tns='django.soap.files',

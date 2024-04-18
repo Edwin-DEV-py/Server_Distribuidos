@@ -343,3 +343,25 @@ class DownloadFileAPIView(APIView):
         
 
 #Compartir un archivo a otro usuario
+def shareFile(token, fileId, userShare):
+        
+    #verificar el token
+    user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+    user_id = user['user_id']
+    
+    try:
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        original_file  = FileModel.objects.get(userId=user_id, id=fileId)
+        
+        new_file = FileModel.objects.create(
+            fileName=original_file.fileName,
+            folderParent=0,
+            userId=userShare,
+        )
+        
+        serializers = FileSerializer(new_file)
+        return Response(serializers.data)
+        
+    except jwt.exceptions.InvalidTokenError:
+        return "Token inválido"

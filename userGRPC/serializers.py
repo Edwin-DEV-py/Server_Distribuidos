@@ -7,6 +7,6 @@ class UserCredentialsSerializer(serializers.Serializer):
 class UserDataSerializer(serializers.Serializer):
     username = serializers.CharField()
     name = serializers.CharField()
-    email = serializers.EmailField()
-    phone = serializers.IntegerField()
+    email = serializers.CharField()
+    age = serializers.CharField()
     password = serializers.CharField()

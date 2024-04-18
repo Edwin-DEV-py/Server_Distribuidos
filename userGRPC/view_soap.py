@@ -38,19 +38,9 @@ class SoapServiceUser(ServiceBase):
             return 'Error desconocido'
         
     @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
-    def resgisterSoap(ctx, username, name, email, phone, password):
+    def resgisterSoap(ctx, username, name, email, age, password):
         
-        request = HttpRequest()
-        request.data = {
-            'username': username,
-            'name': name,
-            'email': email,
-            'phone': phone,
-            'password': password
-        }
-        
-        register_view = RegisterViewGRPC.as_view()
-        response = register_view(request)
+        response = registerSoapView(username,name,email,age,password)
         
         if 'message' in response.data:
             return response.data['message']

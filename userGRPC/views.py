@@ -121,3 +121,45 @@ def loginSoapView(username, password):
         
     else:
         return serializers.errors
+    
+def registerSoapView(username, name, email, age, password):
+    
+    serializers = UserDataSerializer(
+        data={
+            'username': username,
+            'name': name,
+            'email': email,
+            'age': age, 
+            'password': password
+            }
+        )
+    
+    if serializers.is_valid():
+        username = serializers.validated_data.get('username')
+        name = serializers.validated_data.get('name')
+        email = serializers.validated_data.get('email')
+        age = serializers.validated_data.get('age')
+        password = serializers.validated_data.get('password')
+        
+        
+        channel = grpc.insecure_channel('172.171.240.20:50051')
+        stub = grpc_pb2_grpc.RegisterServiceStub(channel)
+        
+        #crear el mensaje
+        credentials = grpc_pb2.UserCredentialsRegister(
+            username=username,
+            name=name,
+            email=email,
+            age=age,
+            password=password
+        )
+        
+        #llamar al metodo
+        register = stub.RegisterUser(credentials)
+        
+        if register.success:
+            return {'message': register.mensagge}
+        else:
+            return {'error_message': register.error_message}
+    else:
+        return serializers.errors

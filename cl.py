@@ -21,7 +21,7 @@ def calculate_sha256(file_path):
         sha256_hash = hashlib.sha256(file_content).hexdigest()
     return sha256_hash
 
-image_paths = ["C:/Users/nicol/Downloads/create-a-32x32-pixel-art.png"]
+image_paths = ["C:/Users/nicol/Downloads/file.png"]
 tokem = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0MzQ0NjY1LCJpYXQiOjE3MTMwNDg2NjUsImp0aSI6ImVkYjkzMTkwOGI5YjQ2MGJhZDU2MWIzNDcxNDc1YTNmIiwidXNlcl9pZCI6ImFkbWluIn0.PIe92t-GAtNrMB6q8dYOtMUSqWLTQXCy9wlV_M3Zd6Y'
 files_info = []
 

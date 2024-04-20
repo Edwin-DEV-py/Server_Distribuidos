@@ -164,7 +164,7 @@ def Send_data_to_FileServer(data):
 
         
         response = stub.Upload(generate_messages())
-
+        print(response)
         
         file_id = response.file_id
         urls = response.urls

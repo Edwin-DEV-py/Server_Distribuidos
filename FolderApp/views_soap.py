@@ -59,7 +59,7 @@ class SoapService(ServiceBase):
         folders = FolderModel.objects.values('id','folderName','storage','userId','parentFolder')
         return folders
     
-    @rpc(Unicode, Unicode, _returns=Array(FileAndFolderModel), _out_variable_name='files')
+    @rpc(Unicode, Integer, _returns=Array(FileAndFolderModel), _out_variable_name='files')
     def get_folders_by_parent_id(ctx, token, parentFolder):
         try:
             # Obtener el token
@@ -79,14 +79,8 @@ class SoapService(ServiceBase):
             for file in files:
                 file.type = 'file'
                 
-            #obtener los paths
-            #file_paths = FilePaths.objects.filter(file__in=[file.id for file in files])
-            #file_paths_data = {}
-            #for file_path in file_paths:
-                #file_paths_data.setdefault(file_path.file_id, []).append(file_path.filePath)
             
             for file in files:
-                #file.paths = file_paths_data.get(file.id, [])
                 
                 #obtener la extension dle archivo
                 file_name = file.fileName
@@ -99,7 +93,7 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
-    @rpc(Unicode, Unicode, Unicode, _returns=FolderSoapModel)
+    @rpc(Unicode, Unicode, Integer, _returns=FolderSoapModel)
     def registerFolderSoap(ctx, token, folderName, parentFolder):
         try:
             user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
@@ -116,7 +110,7 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
     
-    @rpc(Unicode, Unicode, Unicode, Unicode, _returns=FolderSoapModel)
+    @rpc(Unicode, Integer, Unicode, Integer, _returns=FolderSoapModel)
     def updateFolderSoap(ctx, token, folderId,folderName, parentFolder):
         try:
             user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
@@ -127,15 +121,15 @@ class SoapService(ServiceBase):
             folder_instance.folderName = folderName
             folder_instance.parentFolder = parentFolder
             folder_instance.save()
-
             return FolderSoapModel(id=folder_instance.id, folderName=folder_instance.folderName, storage=folder_instance.storage, userId=folder_instance.userId, parentFolder=folder_instance.parentFolder, createdAt=folder_instance.createdAt)
         
         except FolderModel.DoesNotExist:
+            print("hola")
             return "Folder no encontrado"
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
-    @rpc(Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Integer, _returns=Unicode)
     def deleteFolderSoap(ctx, token, folderId):
         try:
             response = deleteFolder(token, folderId)
@@ -148,7 +142,7 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
-    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Unicode, Integer, _returns=Unicode)
     def shareFolderSoap(ctx, token, folderId, user):
         try:
             response = ShareFolderBySoap().post(token, folderId, user)

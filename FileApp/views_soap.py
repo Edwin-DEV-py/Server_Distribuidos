@@ -26,10 +26,10 @@ import base64
 
 class SoapServiceFiles(ServiceBase):
     
-    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
-    def process_file(ctx, token, fileName, fileSize, file, folderParent):
+    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
+    def process_file(ctx, token, fileName, fileSize, file, folderParent, hash):
         try:
-            response = file_post_view_by_user_id(token, fileName, fileSize, file)
+            response = file_post_view_by_user_id(token, fileName, fileSize, file, hash, folderParent)
             if response.status_code == 201:
                 return 'Creado correctamente'
             else:

@@ -100,7 +100,7 @@ class FilePostView(APIView):
         
 #Funcion para guardar archivos con el id del usuario
 @parser_classes((MultiPartParser, FormParser))
-def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
+def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder_id):
     
     user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
     user_id = user['user_id']
@@ -111,7 +111,7 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
     data = {
         'userId': user_id,
         'fileName': fileName,
-        'folderParent': 0
+        'folderParent': folder_id
     }
     serializers = FileSerializer(data=data)
     if serializers.is_valid():
@@ -124,7 +124,9 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, folder_id=0):
             data_send_server = {
                 'userId': user_id,
                 'file': file,
-                'file_id': instance.id
+                'file_id': instance.id,
+                'file_hash': file_hash,
+                'file_name': fileName
             }
             
             #actualizar el espacio del folder
@@ -155,7 +157,9 @@ def Send_data_to_FileServer(data):
             yield grpc_pb2.FileUploadRequest(
                 file_id=str(data.get('file_id')),
                 owner_id=data.get('userId'),
-                binary_file=data.get('file').encode()
+                binary_file=data.get('file').encode(),
+                file_hash=data.get('file_hash'),
+                file_name=data.get('file_name'),
             )
 
         

@@ -4,7 +4,7 @@ LA RUTA DEL ARCHIVO SE TIENE QUE GUARDAR Y EN EL NOMBRE DEL ARCHIVO SE LE DEBE C
 LA REFERENCIA AL ARCHIVO PARA QUE NO HAYAN DUPLICADOS.
 
 #comando gRPC
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. server.proto
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. upload.proto
 
 conda install -c conda-forge grpcio-tools
 

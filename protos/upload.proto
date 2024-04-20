@@ -4,6 +4,8 @@ message FileUploadRequest {
     string file_id = 1;
     string owner_id = 2;
     bytes binary_file = 3; 
+    string file_hash = 4;
+    string file_name = 5;
 }
 
 message FileUploadResponse {

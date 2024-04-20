@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0cupload.proto\"K\n\x11\x46ileUploadRequest\x12\x0f\n\x07\x66ile_id\x18\x01 \x01(\t\x12\x10\n\x08owner_id\x18\x02 \x01(\t\x12\x13\n\x0b\x62inary_file\x18\x03 \x01(\x0c\"3\n\x12\x46ileUploadResponse\x12\x0f\n\x07\x66ile_id\x18\x01 \x01(\t\x12\x0c\n\x04urls\x18\x02 \x03(\t2B\n\x0b\x46ileService\x12\x33\n\x06Upload\x12\x12.FileUploadRequest\x1a\x13.FileUploadResponse(\x01\x62\x06proto3'
+  serialized_pb=b'\n\x0cupload.proto\"q\n\x11\x46ileUploadRequest\x12\x0f\n\x07\x66ile_id\x18\x01 \x01(\t\x12\x10\n\x08owner_id\x18\x02 \x01(\t\x12\x13\n\x0b\x62inary_file\x18\x03 \x01(\x0c\x12\x11\n\tfile_hash\x18\x04 \x01(\t\x12\x11\n\tfile_name\x18\x05 \x01(\t\"3\n\x12\x46ileUploadResponse\x12\x0f\n\x07\x66ile_id\x18\x01 \x01(\t\x12\x0c\n\x04urls\x18\x02 \x03(\t2B\n\x0b\x46ileService\x12\x33\n\x06Upload\x12\x12.FileUploadRequest\x1a\x13.FileUploadResponse(\x01\x62\x06proto3'
 )
 
 
@@ -54,6 +54,20 @@ _FILEUPLOADREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='file_hash', full_name='FileUploadRequest.file_hash', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='file_name', full_name='FileUploadRequest.file_name', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -67,7 +81,7 @@ _FILEUPLOADREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=16,
-  serialized_end=91,
+  serialized_end=129,
 )
 
 
@@ -105,8 +119,8 @@ _FILEUPLOADRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=93,
-  serialized_end=144,
+  serialized_start=131,
+  serialized_end=182,
 )
 
 DESCRIPTOR.message_types_by_name['FileUploadRequest'] = _FILEUPLOADREQUEST
@@ -136,8 +150,8 @@ _FILESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=146,
-  serialized_end=212,
+  serialized_start=184,
+  serialized_end=250,
   methods=[
   _descriptor.MethodDescriptor(
     name='Upload',

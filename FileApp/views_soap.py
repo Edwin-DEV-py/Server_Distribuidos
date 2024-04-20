@@ -30,7 +30,7 @@ class SoapServiceFiles(ServiceBase):
     def process_file(ctx, token, fileName, fileSize, file, folderParent, hash):
         try:
             response = file_post_view_by_user_id(token, fileName, fileSize, file, hash, folderParent)
-            if response.status_code == 201:
+            if response.status_code == 200:
                 return 'Creado correctamente'
             else:
                 return 'no se guardaron los archivos'

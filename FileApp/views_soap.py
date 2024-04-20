@@ -26,8 +26,8 @@ import base64
 
 class SoapServiceFiles(ServiceBase):
     
-    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
-    def process_file(ctx, token, fileName, fileSize, file, folderParent, hash):
+    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, Integer, _returns=Unicode)
+    def process_file(ctx, token, fileName, fileSize, file, hash, folderParent):
         try:
             response = file_post_view_by_user_id(token, fileName, fileSize, file, hash, folderParent)
             if response.status_code == 200:
@@ -39,7 +39,7 @@ class SoapServiceFiles(ServiceBase):
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
         
-    @rpc(Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Integer, Unicode, Integer, _returns=Unicode)
     def update_file(ctx, token, fileId ,fileName, folderParent):
         try:
 
@@ -53,7 +53,7 @@ class SoapServiceFiles(ServiceBase):
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
         
-    @rpc(Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Integer, _returns=Unicode)
     def delete_file(ctx, token, fileId):
         try:
 
@@ -67,7 +67,7 @@ class SoapServiceFiles(ServiceBase):
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
 
-    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Integer, Unicode, _returns=Unicode)
     def share_file(ctx, token, fileId ,userShare):
         try:
 
@@ -75,21 +75,22 @@ class SoapServiceFiles(ServiceBase):
             if response.status_code == 201:
                 return 'compartido correctamente'
             else:
-                return 'no se actualizo el archivo'
+                return 'no se compartio el archivo'
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         except Exception as e:
             return f"Ocurrió un error al procesar el archivo: {str(e)}"
         
-    @rpc(Unicode, Unicode, _returns=Unicode)
+    @rpc(Unicode, Integer, _returns=Unicode)
     def download_file(ctx, token, fileId):
         try:
 
             response = downloadByPath(token, fileId)
-            if isinstance(response, str):
-                return response
+            if isinstance(response, dict) and 'file_paths' in response:
+                response_json = json.dumps(response)
+                return response_json
             else:
-                return 'no se actualizo el archivo'
+                return 'no se descargo el archivo'
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         except Exception as e:

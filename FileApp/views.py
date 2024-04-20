@@ -111,11 +111,10 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder
     data = {
         'userId': user_id,
         'fileName': fileName,
-        'folderParent': folder_id
+        'folderParent': int(folder_id)
     }
     serializers = FileSerializer(data=data)
     if serializers.is_valid():
-        
         #transacción atómica para evitar pérdida de datos
         with transaction.atomic():
             instance = serializers.save()
@@ -130,8 +129,8 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder
             }
             
             #actualizar el espacio del folder
-            if folder_id != 0:
-                update_storage_folder = FolderModel.objects.get(id=folder_id)
+            if int(folder_id) != 0:
+                update_storage_folder = FolderModel.objects.get(id=int(folder_id))
                 update_storage_folder.storage = F('storage') + fileSize
                 update_storage_folder.save()
             
@@ -141,7 +140,7 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder
     else:
         return Response(serializers.errors)
     
-    return Response(data, status=status.HTTP_201_CREATED)
+    return Response(data, status=status.HTTP_200_OK)
 
 #funcion para enviar los archivos al servidor
 def Send_data_to_FileServer(data):
@@ -164,7 +163,6 @@ def Send_data_to_FileServer(data):
 
         
         response = stub.Upload(generate_messages())
-        print(response)
         
         file_id = response.file_id
         urls = response.urls
@@ -248,7 +246,6 @@ class UpdateFile(APIView):
 
 #editar archivo con soap
 def updateFile(token, fileId, fileName, folderParent):
-        
     #verificar el token
     user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
     user_id = user['user_id']
@@ -259,6 +256,7 @@ def updateFile(token, fileId, fileName, folderParent):
         file = FileModel.objects.get(userId=user_id, id=fileId)
         
         if folderParent is not None:
+            folderParent = int(folderParent)
             file.folderParent = folderParent
         file.fileName = fileName
         
@@ -376,13 +374,12 @@ def downloadByPath(token, fileId):
     #verificar el token
     user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
     user_id = user['user_id']
-    
     try:
         
         user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
         user_id = user['user_id']
         
-        file = FileModel.objects.get(userId=user_id, id=fileId)
+        file = FileModel.objects.get(userId=user_id, id=int(fileId))
         
         paths = FilePaths.objects.filter(file=file)
         path_list = [path.filePath for path in paths]

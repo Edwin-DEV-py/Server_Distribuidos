@@ -33,8 +33,12 @@ for image_path in image_paths:
     files_info.append({"filename": filename, "filesize": filesize, "encoded_image": encoded_image, "file_hash": file_sha256})
 
 
-client = Client('http://172.171.240.20:8000/files/soap/?wsdl')
+#client = Client('http://172.171.240.20:8000/files/soap/?wsdl')
 
+client = Client('http://127.0.0.1:8000/files/soap/?wsdl')
 for file_info in files_info:
     response = client.service.process_file(tokem, file_info["filename"], file_info["filesize"], file_info["encoded_image"], file_info["file_hash"], 0)
     print(response)
+    
+response2 = client.service.download_file(tokem,44)
+print(response2)

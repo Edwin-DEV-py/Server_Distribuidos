@@ -101,7 +101,6 @@ class FilePostView(APIView):
 #Funcion para guardar archivos con el id del usuario
 @parser_classes((MultiPartParser, FormParser))
 def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder_id):
-    
     user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
     user_id = user['user_id']
 

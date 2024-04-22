@@ -22,7 +22,8 @@ def calculate_sha256(file_path):
     return sha256_hash
 
 image_paths = ["C:/Users/nicol/Downloads/file.png"]
-tokem = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0MzQ0NjY1LCJpYXQiOjE3MTMwNDg2NjUsImp0aSI6ImVkYjkzMTkwOGI5YjQ2MGJhZDU2MWIzNDcxNDc1YTNmIiwidXNlcl9pZCI6ImFkbWluIn0.PIe92t-GAtNrMB6q8dYOtMUSqWLTQXCy9wlV_M3Zd6Y'
+#tokem = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0MzQ0NjY1LCJpYXQiOjE3MTMwNDg2NjUsImp0aSI6ImVkYjkzMTkwOGI5YjQ2MGJhZDU2MWIzNDcxNDc1YTNmIiwidXNlcl9pZCI6ImFkbWluIn0.PIe92t-GAtNrMB6q8dYOtMUSqWLTQXCy9wlV_M3Zd6Y'
+tokem = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InZhbGRpIiwidXNlcl9pZCI6MiwicGVyc29uX2lkIjoyLCJwZXJzb25fbmFtZSI6IkRhbmllbCBlc3RlYmEiLCJwZXJzb25fYWdlIjoiMjAiLCJwZXJzb25fbWFpbCI6InZhbGRpQGdtYWlsLmNvbSIsImV4cCI6MTcxNDM2NTMyMn0.HHSWhal0Jee1Bd6G9IkmiaFlH1Or6Wwu0EhcCD_Ucuo'
 files_info = []
 
 for image_path in image_paths:
@@ -40,5 +41,5 @@ for file_info in files_info:
     response = client.service.process_file(tokem, file_info["filename"], file_info["filesize"], file_info["encoded_image"], file_info["file_hash"], 0)
     print(response)
     
-response2 = client.service.download_file(tokem,44)
-print(response2)
+#response2 = client.service.download_file(tokem,44)
+#print(response2)

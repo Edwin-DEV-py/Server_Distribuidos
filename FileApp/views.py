@@ -267,7 +267,7 @@ def updateFile(token, fileId, fileName, folderParent):
         return "Token inválido"
 
 #eliminar archivo con soap
-def deleteFile(token, filesId):
+def deleteFile(token, fileId):
         
     #verificar el token
     user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
@@ -276,22 +276,14 @@ def deleteFile(token, filesId):
     try:
         user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
         user_id = user['user_id']
-        
-        if isinstance(filesId, list):
-            for file_id in filesId:
-                try:
-                    file = FileModel.objects.get(userId=user_id, id=file_id)
-                    file.delete()
-                except FileModel.DoesNotExist:
-                    pass
-        else:
-            file_id[0] = filesId
-            try:
-                file = FileModel.objects.get(userId=user_id, id=file_id)
-                file.delete()
-            except FileModel.DoesNotExist:
-                pass
-        
+        try:
+            file = FileModel.objects.get(userId=user_id, id=fileId)
+            file.delete()
+
+            return "El archivo se eliminó correctamente."
+        except FileModel.DoesNotExist:
+            return "El archivo no se encontró."
+    
     except jwt.exceptions.InvalidTokenError:
         return "Token inválido"
 

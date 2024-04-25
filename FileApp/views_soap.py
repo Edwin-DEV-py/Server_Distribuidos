@@ -44,7 +44,7 @@ class SoapServiceFiles(ServiceBase):
         try:
 
             response = updateFile(token, fileId,fileName, folderParent)
-            if response.status_code == 203:
+            if response.status_code == 200:
                 return 'actualizado correctamente'
             else:
                 return 'no se actualizo el archivo'
@@ -58,10 +58,7 @@ class SoapServiceFiles(ServiceBase):
         try:
 
             response = deleteFile(token, fileId)
-            if response.status_code == 200:
-                return 'eliminado correctamente'
-            else:
-                return 'no se elimino el archivo'
+            return(response)
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         except Exception as e:

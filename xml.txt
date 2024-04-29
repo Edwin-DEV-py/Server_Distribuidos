@@ -292,8 +292,8 @@ ENDPOINT QUE LE TIENEN QUE HACER POST TAL CUAL COMO SE LES MUESTRA ABAJO, ES XML
    <soapenv:Header/>
    <soapenv:Body>
       <web:get_folders_by_parent_id>
-         <web:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</web:token>
-         <web:parentFolder>4</web:parentFolder>
+         <web:token>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6MSwidXNlcl9pZCI6InZhbGRpIiwicGVyc29uX2lkIjoxLCJwZXJzb25fbmFtZSI6ImRhbmllbCBlc3RlYmFuIiwicGVyc29uX2FnZSI6IjIwIiwicGVyc29uX21haWwiOiJAZ21haWwuY29tIiwiZXhwIjoxNzE0NjI3OTY5fQ.10_WoxlbBlKUFaupby5QE6co-PL8xX5PhSNg8ezOm34</web:token>
+         <web:parentFolder>0</web:parentFolder>
       </web:get_folders_by_parent_id>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -303,7 +303,7 @@ ENDPOINT QUE LE TIENEN QUE HACER POST TAL CUAL COMO SE LES MUESTRA ABAJO, ES XML
    <soapenv:Header/>
    <soapenv:Body>
       <tns:registerFolderSoap>
-         <tns:token>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyOTk2NzM4LCJpYXQiOjE3MTE3MDA3MzgsImp0aSI6Ijc2NzVmYzcyN2Q3OTRlYWNiNzk4MDVmODkxZmNhNjdlIiwidXNlcl9pZCI6ImFkbWluIn0.oAJvSszHmqzOwdkltgUIOEfVlr1w1gTPwdDLBpyn7M4</tns:token>
+         <tns:token>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6MSwidXNlcl9pZCI6InZhbGRpIiwicGVyc29uX2lkIjoxLCJwZXJzb25fbmFtZSI6ImRhbmllbCBlc3RlYmFuIiwicGVyc29uX2FnZSI6IjIwIiwicGVyc29uX21haWwiOiJAZ21haWwuY29tIiwiZXhwIjoxNzE0NjI3OTY5fQ.10_WoxlbBlKUFaupby5QE6co-PL8xX5PhSNg8ezOm34</tns:token>
         <tns:folderName>CarpetaSoap</tns:folderName>
         <tns:parentFolder>0</tns:parentFolder>
       </tns:registerFolderSoap>

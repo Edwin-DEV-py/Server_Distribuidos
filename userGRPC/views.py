@@ -163,3 +163,4 @@ def registerSoapView(username, name, email, age, password):
             return {'error_message': register.error_message}
     else:
         return serializers.errors
+    

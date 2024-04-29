@@ -42,10 +42,10 @@ class SoapServiceUser(ServiceBase):
         
         response = registerSoapView(username,name,email,age,password)
         
-        if 'message' in response.data:
-            return response.data['message']
-        elif 'error_message' in response.data:
-            return response.data['error_message']
+        if 'message' in response:
+            return response['message']
+        elif 'error_message' in response:
+            return response['error_message']
         else:
             return 'Error desconocido'
     

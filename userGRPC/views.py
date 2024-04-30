@@ -24,7 +24,7 @@ class AuthenticationView(APIView):
             
             #conexion gRPC con el server de usuarios
             
-            channel = grpc.insecure_channel('127.0.0.1:50051')
+            channel = grpc.insecure_channel('localhost:5001')
             stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
 
             #crear el mensjae
@@ -103,7 +103,7 @@ def loginSoapView(username, password):
         
         #conexion gRPC con el server de usuarios
         
-        channel = grpc.insecure_channel('127.0.0.1:50051')
+        channel = grpc.insecure_channel('localhost:5001')
         stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
         
         #crear el mensjae
@@ -142,7 +142,7 @@ def registerSoapView(username, name, email, age, password):
         password = serializers.validated_data.get('password')
         
         
-        channel = grpc.insecure_channel('127.0.0.1:50051')
+        channel = grpc.insecure_channel('localhost:5001')
         stub = grpc_pb2_grpc.RegisterServiceStub(channel)
         
         #crear el mensaje

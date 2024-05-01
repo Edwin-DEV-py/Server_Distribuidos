@@ -23,7 +23,7 @@ def calculate_sha256(file_path):
 
 image_paths = ["C:/Users/nicol/Downloads/file.png"]
 #tokem = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0MzQ0NjY1LCJpYXQiOjE3MTMwNDg2NjUsImp0aSI6ImVkYjkzMTkwOGI5YjQ2MGJhZDU2MWIzNDcxNDc1YTNmIiwidXNlcl9pZCI6ImFkbWluIn0.PIe92t-GAtNrMB6q8dYOtMUSqWLTQXCy9wlV_M3Zd6Y'
-tokem = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InZhbGRpIiwidXNlcl9pZCI6MiwicGVyc29uX2lkIjoyLCJwZXJzb25fbmFtZSI6IkRhbmllbCBlc3RlYmEiLCJwZXJzb25fYWdlIjoiMjAiLCJwZXJzb25fbWFpbCI6InZhbGRpQGdtYWlsLmNvbSIsImV4cCI6MTcxNDM2NTMyMn0.HHSWhal0Jee1Bd6G9IkmiaFlH1Or6Wwu0EhcCD_Ucuo'
+tokem = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE1ODg5MjQ3LCJpYXQiOjE3MTQ1OTMyNDcsImp0aSI6Ijc3YjhlZDk0NDdjYzQ2MWM5M2EwYWM2NmMzYmE3NDBiIiwidXNlcl9pZCI6ImFkbWluIn0.6YvVqouS5mxMLU25m4T00IWmP7kigS3r2uDsfof0IqI'
 files_info = []
 
 for image_path in image_paths:
@@ -36,7 +36,7 @@ for image_path in image_paths:
 
 #client = Client('http://172.171.240.20:8000/files/soap/?wsdl')
 
-client = Client('http://207.248.81.74:80/files/soap/?wsdl')
+client = Client('http://172.171.240.20:80/files/soap/?wsdl')
 for file_info in files_info:
     response = client.service.process_file(tokem, file_info["filename"], file_info["filesize"], file_info["encoded_image"], file_info["file_hash"], 0)
     print(response)

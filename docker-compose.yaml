@@ -9,6 +9,11 @@ services:
       - 80:80
     volumes:
       - .:/app
-    network_mode: "host"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      - server.network
+    
+networks: 
+  server.network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"

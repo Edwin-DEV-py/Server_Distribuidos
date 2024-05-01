@@ -145,8 +145,9 @@ def file_post_view_by_user_id(token, fileName, fileSize, file, file_hash, folder
 def Send_data_to_FileServer(data):
     try:
         
-        channel = grpc.insecure_channel('127.0.0.1:5000')
-        #channel = grpc.insecure_channel('127.0.0.1:50051')
+        #channel = grpc.insecure_channel('127.0.0.1:5000') docker
+        #channel = grpc.insecure_channel('127.0.0.1:50051') local
+        channel = grpc.insecure_channel('172.171.240.20:5001') #azure
         
         stub = upload_pb2_grpc.FileServiceStub(channel)
 

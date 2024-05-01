@@ -104,7 +104,7 @@ def loginSoapView(username, password):
         #conexion gRPC con el server de usuarios
         
         #channel = grpc.insecure_channel('host.docker.internal:5000')
-        channel = grpc.insecure_channel('172.171.240.20:5000')
+        channel = grpc.insecure_channel('172.171.240.20:5001')
         stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
         
         #crear el mensjae

@@ -147,7 +147,7 @@ def Send_data_to_FileServer(data):
         
         #channel = grpc.insecure_channel('127.0.0.1:5000') docker
         #channel = grpc.insecure_channel('127.0.0.1:50051') local
-        channel = grpc.insecure_channel('172.171.240.20:5001') #azure
+        channel = grpc.insecure_channel('172.171.240.20:5000') #azure
         
         stub = upload_pb2_grpc.FileServiceStub(channel)
 

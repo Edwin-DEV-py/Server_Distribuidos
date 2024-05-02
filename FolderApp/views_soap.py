@@ -177,9 +177,9 @@ class SoapService(ServiceBase):
             return "Token inválido"
         
     @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
-    def shareFolderSoap(ctx, token, folderId, user):
+    def shareFolderSoap(ctx, token, folderId, ShareFolderSoap):
         try:
-            response = ShareFolderSoap(token, folderId, user)
+            response = ShareFolderSoap(token, folderId, ShareFolderSoap)
             
             if response == 'Carpeta compartida correctamente':
                 return 'Carpeta compartida correctamente'

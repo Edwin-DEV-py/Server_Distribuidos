@@ -22,6 +22,12 @@ import os
 from .models import *
 from collections import OrderedDict
 import base64
+from xml.etree import ElementTree as ET
+
+class UserSoapModel(ComplexModel):
+    __namespace__ = "users"
+    id = Integer
+    username = String
 
 class SoapServiceUser(ServiceBase):
     
@@ -48,6 +54,28 @@ class SoapServiceUser(ServiceBase):
             return response['error_message']
         else:
             return 'Error desconocido'
+        
+    @rpc(_returns=Unicode)
+    def getUser(ctx):
+        response = requests.get('http://172.171.240.20:5001/users')
+        if response.status_code == 200:
+            
+            users = response.json()
+            root = ET.Element("users")
+            
+            for user in users:
+                user_element = ET.SubElement(root, "user")
+                id_element = ET.SubElement(user_element, "id")
+                id_element.text = str(user["id"])
+                username_element = ET.SubElement(user_element, "username")
+                username_element.text = user["username"]
+            
+            xml_string = ET.tostring(root, encoding="unicode")
+            
+            return xml_string
+        
+        else:
+            return "Error al obtener los usuarios"
     
 my_soap = Application(
     [SoapServiceUser],

@@ -165,3 +165,8 @@ def registerSoapView(username, name, email, age, password):
     else:
         return serializers.errors
     
+def getUsers():
+    
+    response = requests.get('http://172.171.240.20:5001/users')
+    
+    print(requests)

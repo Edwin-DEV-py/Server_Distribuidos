@@ -179,7 +179,7 @@ class SoapService(ServiceBase):
     @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
     def shareFolderSoap(ctx, token, folderId, user):
         try:
-            response = ShareFolderBySoap().post(token, folderId, user)
+            response = ShareFolderSoap(token, folderId, user)
             
             if response == 'Carpeta compartida correctamente':
                 return 'Carpeta compartida correctamente'

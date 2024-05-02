@@ -176,7 +176,7 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
-    @rpc(Unicode, Unicode, Integer, _returns=Unicode)
+    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
     def shareFolderSoap(ctx, token, folderId, user):
         try:
             response = ShareFolderBySoap().post(token, folderId, user)

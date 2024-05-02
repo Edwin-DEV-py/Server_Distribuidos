@@ -106,7 +106,6 @@ def loginSoapView(username, password):
         #channel = grpc.insecure_channel('host.docker.internal:5000')
         channel = grpc.insecure_channel('172.171.240.20:50051')
         stub = grpc_pb2_grpc.AuthenticationServiceStub(channel)
-        
         #crear el mensjae
         credentials = grpc_pb2.UserCredentials(username=username,password=password)
         
@@ -115,6 +114,7 @@ def loginSoapView(username, password):
         
         #procesar la respuesta del servidor
         if authentication.success:
+            print(authentication.token)
             return {'token': authentication.token}
         
         else:

@@ -387,4 +387,89 @@ class ShareFolderBySoap():
             
             self.copy_files(subfolder_copy.id, subfolder.id, sharedUserId)
             self.copy_subfolder(subfolder_copy.id, subfolder, sharedUserId)
+
+def ShareFolderSoap(token,folderId, shareuserId):
+    try:
+        #decodificar el token
+        user = jwt.decode(token, settings.SECRET_TOKEN_KEY, algorithms=['HS256'])
+        user_id = user['user_id']
+        
+        principalFolder = FolderModel.objects.get(id=folderId, userId=user_id)
+        
+        folder_copy = copy_folder(principalFolder, shareuserId)
+        folder_copy.save()
+        
+        copy_files(folder_copy.id, principalFolder.id, shareuserId)
+        
+        return 'Carpeta compartida correctamente'
+    except jwt.exceptions.InvalidTokenError:
+        return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+#funcion para copiar la informacion y duplicarla recursivamente
+def copy_folder(self, folder, sharedUserId):
+    
+    #crear la copia de la carpeta para duplicarla
+    folder_copy = FolderModel.objects.create(
+        folderName=folder.folderName,
+        storage=folder.storage,
+        userId=sharedUserId,
+        parentFolder=0
+    )
+    
+    copy_subfolder(folder_copy.id, folder, sharedUserId)
+    
+    return folder_copy
+
+#funcion para copiar la informacion y duplicarla recursivamente subfolder
+def copy_folderBySubFolder(folder, sharedUserId, newParentId):
+    
+    #crear la copia de la carpeta para duplicarla
+    folder_copy = FolderModel.objects.create(
+        folderName=folder.folderName,
+        storage=folder.storage,
+        userId=sharedUserId,
+        parentFolder=newParentId
+    )
+    
+    return folder_copy
+
+#copiar los archivos y duplicarlos
+def copy_files(newFolderId, oldFolderId, sharedUserId):
+    
+    files = FileModel.objects.filter(folderParent=oldFolderId)
+    
+    for file in files:
+        
+        file_copy = change_paths_file_copy(file, newFolderId, sharedUserId)
+        file_copy.save()
+        
+#cambiar la referncia del archivo para la misma ruta
+def change_paths_file_copy(file, newFolderId, sharedUserId):
+    
+    file_copy = FileModel.objects.create(
+        fileName=file.fileName,
+        folderParent=newFolderId,
+        userId=sharedUserId
+    )
+    
+    paths = FilePaths.objects.filter(file=file.id)
+    
+    for path in paths:
+        path_copy = FilePaths.objects.create(
+            file=file_copy,
+            filePath=path.filePath
+        )
+    
+    return file_copy
+
+def copy_subfolder(newFolderId, oldFolderId, sharedUserId):
+    
+    subfolders = FolderModel.objects.filter(parentFolder=oldFolderId.id)
+    for subfolder in subfolders:
+        
+        subfolder_copy = copy_folderBySubFolder(subfolder, sharedUserId, newFolderId)
+        subfolder_copy.save()
+        
+        copy_files(subfolder_copy.id, subfolder.id, sharedUserId)
+        copy_subfolder(subfolder_copy.id, subfolder, sharedUserId)
             

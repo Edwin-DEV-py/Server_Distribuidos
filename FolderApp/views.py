@@ -406,7 +406,7 @@ def ShareFolderSoap(token,folderId, shareuserId):
         return Response({'error': 'Token inválido'}, status=status.HTTP_401_UNAUTHORIZED)
     
 #funcion para copiar la informacion y duplicarla recursivamente
-def copy_folder(self, folder, sharedUserId):
+def copy_folder(folder, sharedUserId):
     
     #crear la copia de la carpeta para duplicarla
     folder_copy = FolderModel.objects.create(

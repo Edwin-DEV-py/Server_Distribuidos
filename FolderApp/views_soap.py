@@ -176,10 +176,10 @@ class SoapService(ServiceBase):
         except jwt.exceptions.InvalidTokenError:
             return "Token inválido"
         
-    @rpc(Unicode, Unicode, Integer, _returns=Unicode)
-    def shareFolderSoap(ctx, token, folderId, user):
+    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    def shareFolderSoap(ctx, token, folderId, sharedUserId):
         try:
-            response = ShareFolderBySoap().post(token, folderId, user)
+            response = ShareFolderSoap(token, folderId, sharedUserId)
             
             if response == 'Carpeta compartida correctamente':
                 return 'Carpeta compartida correctamente'

@@ -355,6 +355,13 @@ def shareFile(token, fileId, userShare):
             userId=userShare,
         )
         
+        original_paths = FilePaths.objects.filter(file=original_file)
+        for original_path in original_paths:
+                FilePaths.objects.create(
+                    file=new_file,
+                    filePath=original_path.filePath
+                )
+        
         serializers = FileSerializer(new_file)
         return Response(serializers.data)
         
